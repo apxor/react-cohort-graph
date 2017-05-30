@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "react": "15.5.4",
-    "react-dom": "15.5.4",
     "webpack": "^2.6.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
@@ -50,5 +49,8 @@
     "chai": "3.5.0",
     "mocha": "3.3.0",
     "yargs": "7.1.0"
+  },
+  "dependencies": {
+    "prop-types": "15.5.10"
   }
 }
