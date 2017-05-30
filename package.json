@@ -4,7 +4,10 @@
   "description": "Cohort Analysis Graph with ReactJS",
   "main": "reactcohortgraph.min.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --env build",
+    "dev": "webpack --progress --colors --watch --env dev",
+    "test": "mocha --compilers js:babel-core/register --colors ./test/*.spec.js",
+    "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -26,5 +29,26 @@
   "bugs": {
     "url": "https://github.com/apxor/react-cohort-graph/issues"
   },
-  "homepage": "https://github.com/apxor/react-cohort-graph#readme"
+  "homepage": "https://github.com/apxor/react-cohort-graph#readme",
+  "peerDependencies": {
+    "react": "^0.14 || ^15.0",
+    "react-dom": "^0.14 || ^15.0"
+  },
+  "devDependencies": {
+    "react": "15.5.4",
+    "react-dom": "15.5.4",
+    "webpack": "^2.6.1",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.0.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-stage-0": "^6.24.1",
+    "webpack-dev-server": "^2.4.5",
+    "babel-cli": "6.24.1",
+    "babel-eslint": "7.2.3",
+    "babel-plugin-add-module-exports": "0.2.1",
+    "babel-preset-es2015": "6.24.1",
+    "chai": "3.5.0",
+    "mocha": "3.3.0",
+    "yargs": "7.1.0"
+  }
 }
