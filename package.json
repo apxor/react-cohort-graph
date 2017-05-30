@@ -1,0 +1,30 @@
+{
+  "name": "react-cohort-graph",
+  "version": "1.0.0",
+  "description": "Cohort Analysis Graph with ReactJS",
+  "main": "reactcohortgraph.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apxor/react-cohort-graph.git"
+  },
+  "keywords": [
+    "cohort",
+    "retention",
+    "graph",
+    "cohort",
+    "analysis",
+    "retention",
+    "graph",
+    "react",
+    "graph"
+  ],
+  "author": "Jyothi Babu Araja <arajajyothibabu@gmail.com> (https://arajajyothibabu.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/apxor/react-cohort-graph/issues"
+  },
+  "homepage": "https://github.com/apxor/react-cohort-graph#readme"
+}
