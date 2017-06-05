@@ -3,11 +3,21 @@
  */
 export default class DataStore {
 
-    constructor(data){
+    /**
+     *
+     * @param data {Object}
+     * @param options {Object}
+     * options = {
+     *  shadeColor: {string} HEX
+     *  headerColor
+     * }
+     */
+    constructor(data, options){
         this.isValid = true;
         this._checkValidity(data);
         this.rawStore = data;
         this.store = {};
+        this.headers = {};
         if(this.isValid){
             this._buildStore(data);
         }else{
@@ -70,11 +80,78 @@ export default class DataStore {
                                     color: this._shadeCellWithColor(percent)
                                 };
                             })
-                        ])
+                        ]);
                     }
                 }
             }
         }
+    };
+
+    /**
+     * builds header for table
+     * @private
+     */
+    _buildHeaders = () => { //TODO: can also take custom headers
+        for(let key in this.store){
+            if(this.store.hasOwnProperty(key)){
+                this.headers[key] = [];
+                this.headers[key].push({
+                    value: key //TODO:
+                });
+                let cellData = {};
+                cellData.isHeader = true;
+                cellData.index = 0;
+                cellData.type = key;
+                cellData.value = key;
+                cellData.valueFor = key;
+                cellData.total = this._sumOfColumnWithIndex(this.store[key], 1);
+                cellData.percent = 100;
+                cellData.color = "#F1F1F1";
+                this.headers[key].push(cellData);
+                const largeRow = this.store[key][0];
+                largeRow.forEach((el, index) => {
+                    if(index < 2) return;
+                    const value = this._sumOfColumnWithIndex(this.store[key], index);
+                    const percent = this._getPercentage(cellData.total, value);
+                    this.headers[key].push({
+                        isHeader: true,
+                        index: index,
+                        type: type,
+                        value: value,
+                        valueFor: largeRow[0],
+                        total: cellData.total,
+                        percent: percent,
+                        color: this._shadeCellWithColor(percent)
+                    });
+                });
+            }
+        }
+    };
+
+    /**
+     * Sum of Array Elements
+     * @param arr
+     * @private
+     */
+    _sumOfArrayElements = arr => arr.reduce((a, b) => a + b);
+
+    /**
+     *
+     * @param arr
+     * @param index
+     * @returns {number}
+     * @private
+     */
+    _sumOfColumnWithIndex = (arr, index) => {
+        let sum = 0;
+        arr.forEach(el => {
+            try{
+                sum += el[index];
+            }catch(e){
+                sum += 0;
+            }
+        });
+        return sum;
     };
 
     /**
@@ -106,6 +183,24 @@ export default class DataStore {
             }
         }else{
             throw new Error(`No Data Found for cell with type => ${type}, row => ${row}, col => ${col}`);
+        }
+    };
+
+    /**
+     *
+     * @param type
+     * @param col
+     * @returns {*}
+     */
+    getHeaderCellData = (type, col) => {
+        if(this.headers.hasOwnProperty(type)){
+            try {
+                return this.headers[type][col];
+            }catch(e){
+                throw new Error(`No Data Found for cell with type => ${type}, col => ${col}`);
+            }
+        }else{
+            throw new Error(`No Data Found for cell with type => ${type}, col => ${col}`);
         }
     };
 
