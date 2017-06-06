@@ -56,7 +56,7 @@ class ReactCohortGraph extends React.Component {
                 <div style={TableHeading}>
                     {
                         header.map((headerCell, i) =>
-                            <HeaderCell key={"header" + i} {...headerCell}>{headerCell.value}</HeaderCell>
+                            <HeaderCell key={"header" + i} {...headerCell} valueKey={""} />
                         )
                     }
                 </div>
@@ -66,7 +66,7 @@ class ReactCohortGraph extends React.Component {
                             <div style={TableRow} key={"row" + j}>
                                 {
                                     row.map((cell, k) =>
-                                        <BodyCell key={"cell" + k} {...cell}> { cell.value } </BodyCell>
+                                        <BodyCell key={"cell" + k} {...cell} valueKey={""} />
                                     )
                                 }
                             </div>
