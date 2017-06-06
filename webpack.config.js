@@ -27,14 +27,17 @@ module.exports = {
         libraryTarget: 'umd'
     },
     resolve: {
-        modules: [path.resolve('./src')],
-        extensions: ['.js']
+        modules: [
+            path.resolve('./src'),
+            'node_modules'
+        ],
+        extensions: ['.js'],
     },
     module: {
         loaders: [
             {
                 test: /\.js$/,
-                loader: ['babel-loader?presets[]=es2015,presets[]=stage-0'],
+                loader: ['babel-loader?presets[]=es2015,presets[]=react,presets[]=stage-0'],
                 exclude: /(node_modules|bower_components)/
             },
             {

@@ -1,6 +1,8 @@
 /**
  * Created by jyothi on 30/5/17.
  */
+import { DEFAULT_CELL_COLOR, DEFAULT_HEADER_CELL_COLOR, DEFAULT_KEY_CELL_COLOR }  from './styles';
+
 export default class DataStore {
 
     /**
@@ -20,6 +22,7 @@ export default class DataStore {
         this.headers = {};
         if(this.isValid){
             this._buildStore(data);
+            this._buildHeaders();
         }else{
             throw new Error("Invalid Data for cohort graph..!");
         }
@@ -35,7 +38,7 @@ export default class DataStore {
             for(let key in data){
                 if(data.hasOwnProperty(key) && typeof data[key] === 'object' && !Array.isArray(data[key])){
                     for(let anotherKey in data[key]){
-                        if(data[key].hasOwnProperty(anotherKey) && Array.isArray(data[key][anotherKey])){
+                        if(data[key].hasOwnProperty(anotherKey) && !Array.isArray(data[key][anotherKey])){
                             this.isValid = false;
                             return;
                         }
@@ -67,17 +70,17 @@ export default class DataStore {
                         cellData.valueFor = anotherKey;
                         cellData.total = data[key][anotherKey][0];
                         cellData.percent = 100;
-                        cellData.color = "#F1F1F1";
+                        cellData.color = DEFAULT_KEY_CELL_COLOR;
                         this.store[key].push([
-                            cellData, ...data[key][anotherKey].map(value => {
+                            cellData, ...data[key][anotherKey].map((value, index) => {
                                 const percent = this._getPercentage(cellData.total, value);
                                 return {
-                                    type: type,
+                                    type: key,
                                     value: value,
                                     valueFor: anotherKey,
                                     total: cellData.total,
                                     percent: percent,
-                                    color: this._shadeCellWithColor(percent)
+                                    color: index === 0 ? DEFAULT_CELL_COLOR : this._shadeCellWithColor(percent)
                                 };
                             })
                         ]);
@@ -95,19 +98,20 @@ export default class DataStore {
         for(let key in this.store){
             if(this.store.hasOwnProperty(key)){
                 this.headers[key] = [];
-                this.headers[key].push({
-                    value: key //TODO:
+                this.headers[key].push({ //first cell
+                    value: key, //TODO:
+                    color: DEFAULT_HEADER_CELL_COLOR
                 });
                 let cellData = {};
                 cellData.isHeader = true;
                 cellData.index = 0;
                 cellData.type = key;
-                cellData.value = key;
+                cellData.value = this._sumOfColumnWithIndex(this.store[key], 1);
                 cellData.valueFor = key;
-                cellData.total = this._sumOfColumnWithIndex(this.store[key], 1);
+                cellData.total = cellData.value;
                 cellData.percent = 100;
-                cellData.color = "#F1F1F1";
-                this.headers[key].push(cellData);
+                cellData.color = DEFAULT_HEADER_CELL_COLOR;
+                this.headers[key].push(cellData); //second cell
                 const largeRow = this.store[key][0];
                 largeRow.forEach((el, index) => {
                     if(index < 2) return;
@@ -116,7 +120,7 @@ export default class DataStore {
                     this.headers[key].push({
                         isHeader: true,
                         index: index,
-                        type: type,
+                        type: key,
                         value: value,
                         valueFor: largeRow[0],
                         total: cellData.total,
@@ -146,7 +150,7 @@ export default class DataStore {
         let sum = 0;
         arr.forEach(el => {
             try{
-                sum += el[index];
+                sum += el[index].value;
             }catch(e){
                 sum += 0;
             }
@@ -164,6 +168,18 @@ export default class DataStore {
             return this.store[type]; //returns [][]
         }else{
             throw new Error(`No Data Found for type => ${type}`);
+        }
+    };
+
+    /**
+     *
+     * @param type
+     */
+    getHighestRowSize = (type) => {
+        if(this.store.hasOwnProperty(type)){
+            return this.store[type][0].length; //returns [][]
+        }else{
+            throw new Error(`No Columns Found for type => ${type}`);
         }
     };
 
@@ -205,6 +221,32 @@ export default class DataStore {
     };
 
     /**
+     *
+     * @param type
+     * @returns {*}
+     */
+    getHeader = (type) => {
+        if(this.headers.hasOwnProperty(type)){
+            return this.headers[type]; //returns [][]
+        }else{
+            throw new Error(`No Headers Found for type => ${type}`);
+        }
+    };
+
+    /**
+     *
+     * @param type
+     * @returns {*}
+     */
+    getRows = (type) => {
+        if(this.store.hasOwnProperty(type)){
+            return this.store[type]; //returns [][]
+        }else{
+            throw new Error(`No Headers Found for type => ${type}`);
+        }
+    };
+
+    /**
      * Cell Shade color based on percentage
      * @param percent
      * @param color
@@ -218,15 +260,14 @@ export default class DataStore {
             R = f >> 16,
             G = f >> 8 & 0x00FF,
             B = f & 0x0000FF;
-        return `#
-            ${
-                (
-                    0x1000000 +
-                    (Math.round((t - R) * p) + R) * 0x10000 +
-                    (Math.round((t - G) * p) + G) * 0x100 +
-                    (Math.round((t - B) * p) + B)
-                )
-            }`.toString(16).slice(1);
+        return `#${
+            (
+                0x1000000 +
+                (Math.round((t - R) * p) + R) * 0x10000 +
+                (Math.round((t - G) * p) + G) * 0x100 +
+                (Math.round((t - B) * p) + B)
+            ).toString(16).slice(1)
+        }`;
     };
 
     /**
