@@ -108,7 +108,7 @@ export default class DataStore {
                     value: "", //TODO:
                     color: DEFAULT_HEADER_CELL_COLOR,
                     isLabel: true,
-                    label: key
+                    label: this._turnCamelCase(key)
                 });
                 let cellData = {};
                 cellData.isHeader = true;
@@ -127,7 +127,7 @@ export default class DataStore {
                 largeRow.forEach((el, index) => {
                     if(index < 2) return;
                     const value = this._sumOfColumnWithIndex(this.store[key], index);
-                    const percent = this._getPercentage(this._sumOfFirstColumnUpToIndex(this.store[key], totalRows - index + 1), value);
+                    const percent = this._getPercentage(this._sumOfFirstColumnUpToIndex(this.store[key], totalRows - index), value);
                     this.headers[key].push({
                         isHeader: true,
                         index: index,

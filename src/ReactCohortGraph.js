@@ -88,8 +88,8 @@ ReactCohortGraph.propTypes = {
     customEmptyDataMessage : PropTypes.string,
     columnClickEvent : PropTypes.func,
     maxDays : PropTypes.number,
-    maxWeeks : PropTypes.number,
-    maxMonths : PropTypes.number,
+    /*maxWeeks : PropTypes.number, //TODO:
+    maxMonths : PropTypes.number,*/
     //enableTooltip : PropTypes.bool, TODO
     showAbsolute : PropTypes.bool,
     toggleValues : PropTypes.bool,
