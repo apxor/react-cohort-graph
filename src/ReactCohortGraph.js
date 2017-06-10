@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { Table, TableRow, TableHeading, TableBody } from './styles';
 import DataStore from './DataStore';
 import { HeaderCell, BodyCell } from './components';
+import { VALUE_KEYS } from './constants';
 
 class ReactCohortGraph extends React.Component {
 
@@ -13,7 +14,8 @@ class ReactCohortGraph extends React.Component {
         super(props);
         this.state = {
             dataStore: new DataStore({}),
-            currentType: ""
+            currentType: "",
+            valueType: VALUE_KEYS.PERCENT
         };
     }
 
@@ -48,7 +50,7 @@ class ReactCohortGraph extends React.Component {
     }
 
     render(){
-        const { dataStore, currentType } = this.state;
+        const { dataStore, currentType, valueType } = this.state;
         const header = dataStore.getHeader(currentType);
         const rows = dataStore.getRows(currentType);
         return(
@@ -56,7 +58,7 @@ class ReactCohortGraph extends React.Component {
                 <div style={TableHeading}>
                     {
                         header.map((headerCell, i) =>
-                            <HeaderCell key={"header" + i} {...headerCell} valueKey={""} />
+                            <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
                         )
                     }
                 </div>
@@ -66,7 +68,7 @@ class ReactCohortGraph extends React.Component {
                             <div style={TableRow} key={"row" + j}>
                                 {
                                     row.map((cell, k) =>
-                                        <BodyCell key={"cell" + k} {...cell} valueKey={""} />
+                                        <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
                                     )
                                 }
                             </div>

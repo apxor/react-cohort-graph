@@ -2,6 +2,9 @@
  * Created by jyothi on 30/5/17.
  */
 import { DEFAULT_CELL_COLOR, DEFAULT_HEADER_CELL_COLOR, DEFAULT_KEY_CELL_COLOR }  from './styles';
+import { VALUE_KEYS } from './constants';
+
+const { VALUE, PERCENT } = VALUE_KEYS;
 
 export default class DataStore {
 
@@ -66,20 +69,22 @@ export default class DataStore {
                     if(data[key].hasOwnProperty(anotherKey)){
                         let cellData = {};
                         cellData.type = key;
-                        cellData.value = anotherKey;
+                        cellData[VALUE] = anotherKey;
                         cellData.valueFor = anotherKey;
                         cellData.total = data[key][anotherKey][0];
-                        cellData.percent = 100;
+                        cellData[PERCENT] = 100;
                         cellData.color = DEFAULT_KEY_CELL_COLOR;
+                        cellData.isLabel = true;
                         this.store[key].push([
                             cellData, ...data[key][anotherKey].map((value, index) => {
                                 const percent = this._getPercentage(cellData.total, value);
                                 return {
                                     type: key,
-                                    value: value,
+                                    [VALUE]: value,
                                     valueFor: anotherKey,
                                     total: cellData.total,
-                                    percent: percent,
+                                    isTotal: index === 0,
+                                    [PERCENT]: percent,
                                     color: index === 0 ? DEFAULT_CELL_COLOR : this._shadeCellWithColor(percent)
                                 };
                             })
@@ -97,35 +102,42 @@ export default class DataStore {
     _buildHeaders = () => { //TODO: can also take custom headers
         for(let key in this.store){
             if(this.store.hasOwnProperty(key)){
+                const labelPrefix = this._turnCamelCase(key.slice(0, -1));
                 this.headers[key] = [];
                 this.headers[key].push({ //first cell
-                    value: key, //TODO:
-                    color: DEFAULT_HEADER_CELL_COLOR
+                    value: "", //TODO:
+                    color: DEFAULT_HEADER_CELL_COLOR,
+                    isLabel: true,
+                    label: key
                 });
                 let cellData = {};
                 cellData.isHeader = true;
                 cellData.index = 0;
                 cellData.type = key;
-                cellData.value = this._sumOfColumnWithIndex(this.store[key], 1);
+                cellData[VALUE] = this._sumOfColumnWithIndex(this.store[key], 1);
                 cellData.valueFor = key;
                 cellData.total = cellData.value;
-                cellData.percent = 100;
+                cellData[PERCENT] = 100;
+                cellData.isTotal = true;
                 cellData.color = DEFAULT_HEADER_CELL_COLOR;
+                cellData.label = labelPrefix + ' ' + 0;
                 this.headers[key].push(cellData); //second cell
                 const largeRow = this.store[key][0];
+                const totalRows = this.store[key].length;
                 largeRow.forEach((el, index) => {
                     if(index < 2) return;
                     const value = this._sumOfColumnWithIndex(this.store[key], index);
-                    const percent = this._getPercentage(cellData.total, value);
+                    const percent = this._getPercentage(this._sumOfFirstColumnUpToIndex(this.store[key], totalRows - index + 1), value);
                     this.headers[key].push({
                         isHeader: true,
                         index: index,
                         type: key,
-                        value: value,
+                        [VALUE]: value,
                         valueFor: largeRow[0],
                         total: cellData.total,
-                        percent: percent,
-                        color: this._shadeCellWithColor(percent)
+                        [PERCENT]: percent,
+                        color: this._shadeCellWithColor(percent),
+                        label: labelPrefix + ' ' + (index - 1)
                     });
                 });
             }
@@ -155,6 +167,26 @@ export default class DataStore {
                 sum += 0;
             }
         });
+        return sum;
+    };
+
+    /**
+     *
+     * @param arr
+     * @param index
+     * @returns {number}
+     * @private
+     */
+    _sumOfFirstColumnUpToIndex = (arr, index) => {
+        let sum = 0;
+        for(let i = 0; i <= index; i++){
+            try {
+                sum += arr[i][1].value;
+            }catch(e){
+                sum += 0;
+            }
+        }
+        console.log(arr, index, sum);
         return sum;
     };
 
@@ -289,4 +321,10 @@ export default class DataStore {
         return /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/i.test(color);
     };
 
+    _turnCamelCase = (text, defaultReturnValue = "") => {
+        if(typeof text === 'string'){
+            return text.toLowerCase().replace(/\b\w/g, replaced => replaced.toUpperCase());
+        }
+    }
 }
+
