@@ -186,7 +186,6 @@ export default class DataStore {
                 sum += 0;
             }
         }
-        console.log(arr, index, sum);
         return sum;
     };
 

@@ -1,6 +1,6 @@
 {
   "name": "react-cohort-graph",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "Cohort Analysis Graph with ReactJS",
   "main": "lib/reactcohortgraph.js",
   "scripts": {
