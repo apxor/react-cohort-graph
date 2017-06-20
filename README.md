@@ -7,3 +7,5 @@ Cohort Analysis Graph using ReactJS
 Basic Version with minimal visualization without any actions or events.
 
 Documentation on the way :runner: 
+
+[Non React Version](https://arajajyothibabu.github.io/retention-graph-cohort-analysis/)
