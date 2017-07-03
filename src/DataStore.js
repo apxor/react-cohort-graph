@@ -27,7 +27,7 @@ export default class DataStore {
             this._buildStore(data);
             this._buildHeaders();
         }else{
-            throw new Error("Invalid Data for cohort graph..!");
+            console.error("Invalid Data for cohort graph..!");
         }
     }
 
@@ -198,7 +198,7 @@ export default class DataStore {
         if(this.store.hasOwnProperty(type)){
             return this.store[type]; //returns [][]
         }else{
-            throw new Error(`No Data Found for type => ${type}`);
+            console.error(`No Data Found for type => ${type}`);
         }
     };
 
@@ -210,7 +210,7 @@ export default class DataStore {
         if(this.store.hasOwnProperty(type)){
             return this.store[type][0].length; //returns [][]
         }else{
-            throw new Error(`No Columns Found for type => ${type}`);
+            console.error(`No Columns Found for type => ${type}`);
         }
     };
 
@@ -226,10 +226,10 @@ export default class DataStore {
             try {
                 return this.store[type][row][col];
             }catch(e){
-                throw new Error(`No Data Found for cell with type => ${type}, row => ${row}, col => ${col}`);
+                console.error(`No Data Found for cell with type => ${type}, row => ${row}, col => ${col}`);
             }
         }else{
-            throw new Error(`No Data Found for cell with type => ${type}, row => ${row}, col => ${col}`);
+            console.error(`No Data Found for cell with type => ${type}, row => ${row}, col => ${col}`);
         }
     };
 
@@ -244,10 +244,10 @@ export default class DataStore {
             try {
                 return this.headers[type][col];
             }catch(e){
-                throw new Error(`No Data Found for cell with type => ${type}, col => ${col}`);
+                console.error(`No Data Found for cell with type => ${type}, col => ${col}`);
             }
         }else{
-            throw new Error(`No Data Found for cell with type => ${type}, col => ${col}`);
+            console.error(`No Data Found for cell with type => ${type}, col => ${col}`);
         }
     };
 
@@ -260,7 +260,7 @@ export default class DataStore {
         if(this.headers.hasOwnProperty(type)){
             return this.headers[type]; //returns [][]
         }else{
-            throw new Error(`No Headers Found for type => ${type}`);
+            console.error(`No Headers Found for type => ${type}`);
         }
     };
 
@@ -273,7 +273,7 @@ export default class DataStore {
         if(this.store.hasOwnProperty(type)){
             return this.store[type]; //returns [][]
         }else{
-            throw new Error(`No Headers Found for type => ${type}`);
+            console.error(`No Headers Found for type => ${type}`);
         }
     };
 

@@ -2,7 +2,11 @@
  * Created by jyothi on 5/6/17.
  */
 import React from 'react';
-import { Table, TableRow, TableHeading, TableBody, TableCell, HeaderValue, HeaderLabel } from './styles';
+import {
+    Table, TableRow, TableHeading,
+    TableBody, TableCell, HeaderValue,
+    HeaderLabel, ScrollableTableContent
+} from './styles';
 import { VALUE_KEYS } from './constants';
 
 const { VALUE, PERCENT } = VALUE_KEYS;
@@ -24,3 +28,30 @@ export const BodyCell = (props) => (
         {renderValue(props)}
     </div>
 );
+
+export class ScrollableContent extends React.Component {
+
+    constructor(props){
+        super(props);
+        this.state = {
+            width: 0
+        };
+        this.ref = null;
+    }
+
+    componentDidMount(){
+        console.log("refs -> ", this.refs, this.ref.parentNode);
+        this.setState({width: this.ref.parentNode.clientWidth - 1});
+        window.addEventListener('resize', () => {
+            this.setState({width: this.ref.parentNode.clientWidth - 1});
+        });
+    }
+
+    render(){
+        return(
+            <div ref={x => this.ref = x} style={{...ScrollableTableContent, width: this.state.width}}>
+                {this.props.children}
+            </div>
+        )
+    }
+}

@@ -3,9 +3,13 @@
  */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table, TableRow, TableHeading, TableBody } from './styles';
+import {
+    Table, TableRow, TableHeading,
+    TableBody, FixedTablePart,
+    ScrollableTablePart, ScrollableTableContent
+} from './styles';
 import DataStore from './DataStore';
-import { HeaderCell, BodyCell } from './components';
+import { HeaderCell, BodyCell, ScrollableContent } from './components';
 import { VALUE_KEYS } from './constants';
 
 class ReactCohortGraph extends React.Component {
@@ -24,7 +28,7 @@ class ReactCohortGraph extends React.Component {
         const keys = Object.keys(data);
         if(keys.length > 0) {
             this.setState({
-                currentType: Object.keys(data)[0] //taking first key as type by default TODO: give it as option
+                currentType: Object.keys(data)[0]
             });
             this.setState({
                 dataStore: new DataStore(data || {})
@@ -33,15 +37,20 @@ class ReactCohortGraph extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { data } = nextProps;
+        const { data, dataType, valueType } = nextProps;
+        const { currentType } = this.state;
         const keys = Object.keys(data);
         if(keys.length > 0) {
-            this.setState({
-                currentType: Object.keys(data)[0] //taking first key as type by default TODO: give it as option
-            });
-            this.setState({
-                dataStore: new DataStore(data || {})
-            });
+            if (currentType === "" || (valueType === this.state.valueType && dataType === currentType)) {
+                this.setState({
+                    dataStore: new DataStore(data || {})
+                });
+            }else{
+                this.setState({
+                    currentType: dataType || Object.keys(data)[0],
+                    valueType: valueType
+                });
+            }
         }
     }
 
@@ -49,31 +58,67 @@ class ReactCohortGraph extends React.Component {
 
     }
 
+    isFixed = (index) => index < 2;
+
     render(){
         const { dataStore, currentType, valueType } = this.state;
         const header = dataStore.getHeader(currentType);
         const rows = dataStore.getRows(currentType);
         return(
             <div style={Table}>
-                <div style={TableHeading}>
-                    {
-                        header.map((headerCell, i) =>
-                            <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
-                        )
-                    }
-                </div>
                 <div style={TableBody}>
-                    {
-                        rows.map((row, j) =>
-                            <div style={TableRow} key={"row" + j}>
-                                {
-                                    row.map((cell, k) =>
-                                        <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
-                                    )
-                                }
+                    <div style={TableRow}>
+                        <div style={FixedTablePart}>
+                            <div style={Table}>
+                                <div style={TableHeading}>
+                                    {
+                                        header.map((headerCell, i) =>
+                                            this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
+                                        )
+                                    }
+                                </div>
+                                <div style={TableBody}>
+                                    {
+                                        rows.map((row, j) =>
+                                            <div style={TableRow} key={"row" + j}>
+                                                {
+                                                    row.map((cell, k) =>
+                                                        this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                    }
+                                </div>
                             </div>
-                        )
-                    }
+                        </div>
+                        <div style={ScrollableTablePart}>
+                            <ScrollableContent>
+                                <div style={Table}>
+                                        <div style={TableHeading}>
+                                            {
+                                                header.map((headerCell, i) =>
+                                                    !this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
+                                                )
+                                            }
+                                        </div>
+                                        <div style={TableBody}>
+                                            {
+                                                rows.map((row, j) =>
+                                                    <div style={TableRow} key={"row" + j}>
+                                                        {
+                                                            row.map((cell, k) =>
+                                                                !this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
+                                                            )
+                                                        }
+                                                    </div>
+                                                )
+                                            }
+                                        </div>
+                                    </div>
+                            </ScrollableContent>
+                        </div>
+                    </div>
                 </div>
             </div>
         )
@@ -83,6 +128,8 @@ class ReactCohortGraph extends React.Component {
 
 ReactCohortGraph.propTypes = {
     data : PropTypes.object.isRequired,
+    dataType: PropTypes.string.isRequired, //keys of data
+    valueType: PropTypes.string.isRequired, //["value", "percent"]
     cellClickEvent : PropTypes.func,
     showEmptyDataMessage : PropTypes.bool,
     customEmptyDataMessage : PropTypes.string,

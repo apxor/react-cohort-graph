@@ -38,7 +38,9 @@ export const TableCell = {
     backgroundColor: DEFAULT_HEADER_CELL_COLOR,
     padding: '5px 10px',
     borderBottom: '1px solid #DDD',
-    borderRight: DEFAULT_BORDER
+    borderRight: DEFAULT_BORDER,
+    minWidth: '60px',
+    whiteSpace: 'nowrap'
 };
 
 export const HeaderValue = {
@@ -49,4 +51,22 @@ export const HeaderLabel = {
     fontSize: '16px',
     padding: '0',
     margin: '0'
+};
+
+export const FixedTablePart = {
+    display: 'table-cell',
+    minWidth: '200px'
+};
+
+export const ScrollableTableContent = {
+    position: 'relative',
+    display: 'block'
+};
+
+export const ScrollableTablePart = {
+    display: 'table-cell',
+    overflowX: 'auto',
+    whiteSpace: 'nowrap',
+    width: "100%",
+    minWidth: 60
 };
