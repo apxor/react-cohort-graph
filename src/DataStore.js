@@ -261,6 +261,7 @@ export default class DataStore {
             return this.headers[type]; //returns [][]
         }else{
             console.error(`No Headers Found for type => ${type}`);
+            return [];
         }
     };
 
@@ -274,6 +275,7 @@ export default class DataStore {
             return this.store[type]; //returns [][]
         }else{
             console.error(`No Headers Found for type => ${type}`);
+            return [];
         }
     };
 

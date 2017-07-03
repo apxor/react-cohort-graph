@@ -61,40 +61,42 @@ class ReactCohortGraph extends React.Component {
     isFixed = (index) => index < 2;
 
     render(){
+        const {showEmptyDataMessage = true, customEmptyDataMessage} = this.props;
         const { dataStore, currentType, valueType } = this.state;
         const header = dataStore.getHeader(currentType);
         const rows = dataStore.getRows(currentType);
-        return(
-            <div style={Table}>
-                <div style={TableBody}>
-                    <div style={TableRow}>
-                        <div style={FixedTablePart}>
-                            <div style={Table}>
-                                <div style={TableHeading}>
-                                    {
-                                        header.map((headerCell, i) =>
-                                            this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
-                                        )
-                                    }
-                                </div>
-                                <div style={TableBody}>
-                                    {
-                                        rows.map((row, j) =>
-                                            <div style={TableRow} key={"row" + j}>
-                                                {
-                                                    row.map((cell, k) =>
-                                                        this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
-                                                    )
-                                                }
-                                            </div>
-                                        )
-                                    }
+        if(header && header.length > 0){
+            return(
+                <div style={Table}>
+                    <div style={TableBody}>
+                        <div style={TableRow}>
+                            <div style={FixedTablePart}>
+                                <div style={Table}>
+                                    <div style={TableHeading}>
+                                        {
+                                            header.map((headerCell, i) =>
+                                                this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
+                                            )
+                                        }
+                                    </div>
+                                    <div style={TableBody}>
+                                        {
+                                            rows.map((row, j) =>
+                                                <div style={TableRow} key={"row" + j}>
+                                                    {
+                                                        row.map((cell, k) =>
+                                                            this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
+                                                        )
+                                                    }
+                                                </div>
+                                            )
+                                        }
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div style={ScrollableTablePart}>
-                            <ScrollableContent>
-                                <div style={Table}>
+                            <div style={ScrollableTablePart}>
+                                <ScrollableContent>
+                                    <div style={Table}>
                                         <div style={TableHeading}>
                                             {
                                                 header.map((headerCell, i) =>
@@ -116,12 +118,18 @@ class ReactCohortGraph extends React.Component {
                                             }
                                         </div>
                                     </div>
-                            </ScrollableContent>
+                                </ScrollableContent>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        )
+            )
+        }
+        if(showEmptyDataMessage){
+            return(
+                customEmptyDataMessage || <h3>No Data..!</h3>
+            );
+        }
     }
 
 }
@@ -132,10 +140,10 @@ ReactCohortGraph.propTypes = {
     valueType: PropTypes.string.isRequired, //["value", "percent"]
     cellClickEvent : PropTypes.func,
     showEmptyDataMessage : PropTypes.bool,
-    customEmptyDataMessage : PropTypes.string,
+    customEmptyDataMessage : PropTypes.any,
     columnClickEvent : PropTypes.func,
-    maxDays : PropTypes.number,
-    /*maxWeeks : PropTypes.number, //TODO:
+    /*maxDays : PropTypes.number,
+    maxWeeks : PropTypes.number, //TODO:
     maxMonths : PropTypes.number,*/
     //enableTooltip : PropTypes.bool, TODO
     showAbsolute : PropTypes.bool,
