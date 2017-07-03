@@ -61,7 +61,7 @@ class ReactCohortGraph extends React.Component {
     isFixed = (index) => index < 2;
 
     render(){
-        const {showEmptyDataMessage = true, customEmptyDataMessage} = this.props;
+        const {showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter} = this.props;
         const { dataStore, currentType, valueType } = this.state;
         const header = dataStore.getHeader(currentType);
         const rows = dataStore.getRows(currentType);
@@ -85,7 +85,7 @@ class ReactCohortGraph extends React.Component {
                                                 <div style={TableRow} key={"row" + j}>
                                                     {
                                                         row.map((cell, k) =>
-                                                            this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
+                                                            this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} labelFormatter={labelFormatter}/>
                                                         )
                                                     }
                                                 </div>
@@ -142,6 +142,7 @@ ReactCohortGraph.propTypes = {
     showEmptyDataMessage : PropTypes.bool,
     customEmptyDataMessage : PropTypes.any,
     columnClickEvent : PropTypes.func,
+    labelFormatter: PropTypes.func, //function(label){ return formattedLabel;}
     /*maxDays : PropTypes.number,
     maxWeeks : PropTypes.number, //TODO:
     maxMonths : PropTypes.number,*/

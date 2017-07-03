@@ -98,7 +98,7 @@
             "month4": [100]
         }
     };
-    window.ReactDOM.render(React.createElement(ReactCohortGraph, {data: data}, null), document.getElementById("root"));
+    window.ReactDOM.render(React.createElement(ReactCohortGraph, {data: data, labelFormatter: function(value){return value.substring(0, 10)}}, null), document.getElementById("root"));
 </script>
 </body>
 </html>

@@ -12,7 +12,10 @@ import { VALUE_KEYS } from './constants';
 const { VALUE, PERCENT } = VALUE_KEYS;
 
 const renderValue = (props) => {
-    const {isTotal, isLabel, valueType} = props;
+    const {isTotal, isLabel, valueType, labelFormatter} = props;
+    if(typeof labelFormatter === 'function' && isLabel){
+        return labelFormatter(props[VALUE]);
+    }
     return (isTotal || isLabel) ? props[VALUE] : (props.valueType === PERCENT ? `${props[PERCENT]} %` : props[VALUE]);
 };
 

@@ -71,7 +71,7 @@ export default class DataStore {
                         cellData.type = key;
                         cellData[VALUE] = anotherKey;
                         cellData.valueFor = anotherKey;
-                        cellData.total = data[key][anotherKey][0];
+                        cellData.total = data[key][anotherKey].length > 0 ? data[key][anotherKey][0] : 0;
                         cellData[PERCENT] = 100;
                         cellData.color = DEFAULT_KEY_CELL_COLOR;
                         cellData.isLabel = true;
@@ -122,8 +122,8 @@ export default class DataStore {
                 cellData.color = DEFAULT_HEADER_CELL_COLOR;
                 cellData.label = labelPrefix + ' ' + 0;
                 this.headers[key].push(cellData); //second cell
-                const largeRow = this.store[key][0];
                 const totalRows = this.store[key].length;
+                const largeRow = totalRows > 0 ? this.store[key][0] : [];
                 largeRow.forEach((el, index) => {
                     if(index < 2) return;
                     const value = this._sumOfColumnWithIndex(this.store[key], index);
