@@ -127,7 +127,7 @@ export default class DataStore {
                 largeRow.forEach((el, index) => {
                     if(index < 2) return;
                     const value = this._sumOfColumnWithIndex(this.store[key], index);
-                    const percent = this._getPercentage(this._sumOfFirstColumnUpToIndex(this.store[key], totalRows), value);
+                    const percent = this._getPercentage(this._sumOfFirstColumnUpToIndex(this.store[key], totalRows, index), value);
                     this.headers[key].push({
                         isHeader: true,
                         index: index,
@@ -174,14 +174,19 @@ export default class DataStore {
      *
      * @param arr
      * @param index
+     * @param baseIndex
      * @returns {number}
      * @private
      */
-    _sumOfFirstColumnUpToIndex = (arr, index) => {
+    _sumOfFirstColumnUpToIndex = (arr, index, baseIndex) => {
         let sum = 0;
         for(let i = 0; i <= index; i++){
-            try { //FIXME: need better understanding than this
-                sum += arr[i][1].value;
+            try {
+                if(arr[i][baseIndex]){ //If value exists upto this index FIXME: need better understanding than this
+                    sum += arr[i][1].value;
+                }else{
+                    break;
+                }
             }catch(e){ //if no further index break the loop
                 break;
             }
