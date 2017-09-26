@@ -24,32 +24,40 @@ class ReactCohortGraph extends React.Component {
     }
 
     componentWillMount(){
-        const { data } = this.props;
+        const { data, onStoreUpdate } = this.props;
         const keys = Object.keys(data);
         if(keys.length > 0) {
+            const store  = new DataStore(data || {});
+            const currentType =  keys[0];
+            if(typeof onStoreUpdate === 'function'){
+                onStoreUpdate(store, currentType, this.state.valueType);
+            }
             this.setState({
-                currentType: Object.keys(data)[0]
-            });
-            this.setState({
-                dataStore: new DataStore(data || {})
+                currentType: currentType,
+                dataStore: store
             });
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        const { data, dataType, valueType } = nextProps;
+        const { data, dataType, valueType, onStoreUpdate } = nextProps;
         const { currentType } = this.state;
         const keys = Object.keys(data);
         if(keys.length > 0) {
+            const store = new DataStore(data || {});
+            const currentDataType = dataType || Object.keys(data)[0];
             if (currentType === "" || (valueType === this.state.valueType && dataType === currentType)) {
                 this.setState({
-                    dataStore: new DataStore(data || {})
+                    dataStore: store
                 });
             }else{
                 this.setState({
-                    currentType: dataType || Object.keys(data)[0],
+                    currentType: currentDataType,
                     valueType: valueType
                 });
+            }
+            if(typeof onStoreUpdate === 'function') {
+                onStoreUpdate(store, currentDataType, valueType);
             }
         }
     }
@@ -160,7 +168,8 @@ ReactCohortGraph.propTypes = {
     //enableTooltip : PropTypes.bool, TODO
     showAbsolute : PropTypes.bool,
     toggleValues : PropTypes.bool,
-    showHeaderValues : PropTypes.bool
+    showHeaderValues : PropTypes.bool,
+    onStoreUpdate : PropTypes.func //function(store, currentType, valueType)
 };
 
 export default ReactCohortGraph;
