@@ -5,7 +5,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
     Table, TableRow, TableHeading,
-    TableBody, FixedTablePart,
+    TableBody, FixedTablePart, Wrapper,
     ScrollableTablePart, ScrollableTableContent
 } from './styles';
 import DataStore from './DataStore';
@@ -60,6 +60,12 @@ class ReactCohortGraph extends React.Component {
 
     isFixed = (index) => index < 2;
 
+    renderChildren = (props) => {
+        return React.Children.map(props.children, child => {
+            return React.cloneElement(child, props);
+        });
+    };
+
     render(){
         const {showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter} = this.props;
         const { dataStore, currentType, valueType } = this.state;
@@ -67,40 +73,19 @@ class ReactCohortGraph extends React.Component {
         const rows = dataStore.getRows(currentType);
         if(header && header.length > 0){
             return(
-                <div style={Table}>
-                    <div style={TableBody}>
-                        <div style={TableRow}>
-                            <div style={FixedTablePart}>
-                                <div style={Table}>
-                                    <div style={TableHeading}>
-                                        {
-                                            header.map((headerCell, i) =>
-                                                this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
-                                            )
-                                        }
-                                    </div>
-                                    <div style={TableBody}>
-                                        {
-                                            rows.map((row, j) =>
-                                                <div style={TableRow} key={"row" + j}>
-                                                    {
-                                                        row.map((cell, k) =>
-                                                            this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} labelFormatter={labelFormatter}/>
-                                                        )
-                                                    }
-                                                </div>
-                                            )
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                            <div style={ScrollableTablePart}>
-                                <ScrollableContent>
+                <div style={Wrapper}>
+                    {
+                        this.renderChildren({...this.props, ...this.state})
+                    }
+                    <div style={Table}>
+                        <div style={TableBody}>
+                            <div style={TableRow}>
+                                <div style={FixedTablePart}>
                                     <div style={Table}>
                                         <div style={TableHeading}>
                                             {
                                                 header.map((headerCell, i) =>
-                                                    !this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
+                                                    this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
                                                 )
                                             }
                                         </div>
@@ -110,7 +95,7 @@ class ReactCohortGraph extends React.Component {
                                                     <div style={TableRow} key={"row" + j}>
                                                         {
                                                             row.map((cell, k) =>
-                                                                !this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
+                                                                this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} labelFormatter={labelFormatter}/>
                                                             )
                                                         }
                                                     </div>
@@ -118,7 +103,33 @@ class ReactCohortGraph extends React.Component {
                                             }
                                         </div>
                                     </div>
-                                </ScrollableContent>
+                                </div>
+                                <div style={ScrollableTablePart}>
+                                    <ScrollableContent>
+                                        <div style={Table}>
+                                            <div style={TableHeading}>
+                                                {
+                                                    header.map((headerCell, i) =>
+                                                        !this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
+                                                    )
+                                                }
+                                            </div>
+                                            <div style={TableBody}>
+                                                {
+                                                    rows.map((row, j) =>
+                                                        <div style={TableRow} key={"row" + j}>
+                                                            {
+                                                                row.map((cell, k) =>
+                                                                    !this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
+                                                                )
+                                                            }
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                        </div>
+                                    </ScrollableContent>
+                                </div>
                             </div>
                         </div>
                     </div>

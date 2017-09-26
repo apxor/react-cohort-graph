@@ -8,6 +8,12 @@ export const DEFAULT_HEADER_CELL_COLOR = "#DDD";
 
 export const DEFAULT_BORDER = "1px solid #CCC";
 
+export const Wrapper = {
+    width: "100%",
+    padding: 0,
+    margin: 0
+};
+
 export const Table = {
     display: 'table',
     width: "100%",

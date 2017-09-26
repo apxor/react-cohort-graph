@@ -43,7 +43,6 @@ export class ScrollableContent extends React.Component {
     }
 
     componentDidMount(){
-        console.log("refs -> ", this.refs, this.ref.parentNode);
         this.setState({width: this.ref.parentNode.clientWidth - 1});
         window.addEventListener('resize', () => {
             this.setState({width: this.ref.parentNode.clientWidth - 1});
