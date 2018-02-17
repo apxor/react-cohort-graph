@@ -16,10 +16,15 @@ class ReactCohortGraph extends React.Component {
 
     constructor(props){
         super(props);
+        const {
+            showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter,
+            data, dataType, cellClickEvent, defaultValueType =  VALUE_KEYS.PERCENT,
+            columnClickEvent, showAbsolute, toggleValues
+        } = props;
         this.state = {
             dataStore: new DataStore({}),
             currentType: "",
-            valueType: VALUE_KEYS.PERCENT
+            valueType: defaultValueType
         };
     }
 
@@ -75,7 +80,10 @@ class ReactCohortGraph extends React.Component {
     };
 
     render(){
-        const {showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter} = this.props;
+        const {
+            showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter,
+            bodyCellStyles = {}, headerCellStyles = {}
+        } = this.props;
         const { dataStore, currentType, valueType } = this.state;
         const header = dataStore.getHeader(currentType);
         const rows = dataStore.getRows(currentType);
@@ -93,7 +101,7 @@ class ReactCohortGraph extends React.Component {
                                         <div style={TableHeading}>
                                             {
                                                 header.map((headerCell, i) =>
-                                                    this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
+                                                    this.isFixed(i) && <HeaderCell style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
                                                 )
                                             }
                                         </div>
@@ -103,7 +111,7 @@ class ReactCohortGraph extends React.Component {
                                                     <div style={TableRow} key={"row" + j}>
                                                         {
                                                             row.map((cell, k) =>
-                                                                this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} labelFormatter={labelFormatter}/>
+                                                                this.isFixed(k) && <BodyCell style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} labelFormatter={labelFormatter}/>
                                                             )
                                                         }
                                                     </div>
@@ -118,7 +126,7 @@ class ReactCohortGraph extends React.Component {
                                             <div style={TableHeading}>
                                                 {
                                                     header.map((headerCell, i) =>
-                                                        !this.isFixed(i) && <HeaderCell key={"header" + i} {...headerCell} valueType={valueType} />
+                                                        !this.isFixed(i) && <HeaderCell style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
                                                     )
                                                 }
                                             </div>
@@ -128,7 +136,7 @@ class ReactCohortGraph extends React.Component {
                                                         <div style={TableRow} key={"row" + j}>
                                                             {
                                                                 row.map((cell, k) =>
-                                                                    !this.isFixed(k) && <BodyCell key={"cell" + k} {...cell} valueType={valueType} />
+                                                                    !this.isFixed(k) && <BodyCell style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} />
                                                                 )
                                                             }
                                                         </div>
@@ -155,8 +163,8 @@ class ReactCohortGraph extends React.Component {
 
 ReactCohortGraph.propTypes = {
     data : PropTypes.object.isRequired,
-    dataType: PropTypes.string.isRequired, //keys of data
-    valueType: PropTypes.string.isRequired, //["value", "percent"]
+    dataType: PropTypes.string, //keys of data
+    defaultValueType: PropTypes.string, //["value", "percent"]
     cellClickEvent : PropTypes.func,
     showEmptyDataMessage : PropTypes.bool,
     customEmptyDataMessage : PropTypes.any,
@@ -169,7 +177,9 @@ ReactCohortGraph.propTypes = {
     showAbsolute : PropTypes.bool,
     toggleValues : PropTypes.bool,
     showHeaderValues : PropTypes.bool,
-    onStoreUpdate : PropTypes.func //function(store, currentType, valueType)
+    onStoreUpdate : PropTypes.func, //function(store, currentType, valueType)
+    headerCellStyles: PropTypes.object,
+    bodyCellStyles: PropTypes.object
 };
 
 export default ReactCohortGraph;

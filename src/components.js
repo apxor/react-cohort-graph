@@ -20,14 +20,14 @@ const renderValue = (props) => {
 };
 
 export const HeaderCell = (props) => (
-    <div style={{...TableCell, backgroundColor: props.color}}>
+    <div style={{...TableCell, backgroundColor: props.color, ...props.style}}>
         <p style={HeaderLabel}>{props.label}</p>
         <span style={HeaderValue}>{renderValue(props)}</span>
     </div>
 );
 
 export const BodyCell = (props) => (
-    <div style={{...TableCell, backgroundColor: props.color}} title={`Out of ${props.total} on ${props.valueFor}`}>
+    <div style={{...TableCell, backgroundColor: props.color, ...props.style}} title={`Out of ${props.total} on ${props.valueFor}`}>
         {renderValue(props)}
     </div>
 );
