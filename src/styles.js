@@ -2,9 +2,10 @@
  * Created by jyothi on 5/6/17.
  */
 
-export const DEFAULT_CELL_COLOR = "#F5F5F5";
+export const DEFAULT_BODY_CELL_COLOR = "#F5F5F5";
 export const DEFAULT_KEY_CELL_COLOR = "#F6F6F6";
 export const DEFAULT_HEADER_CELL_COLOR = "#F5F5F5";
+export const DEFAULT_SHADE_COLOR = "#3f83a3";
 
 export const DEFAULT_BORDER = "1px solid #F1F1F1";
 
@@ -31,7 +32,6 @@ export const tableRow = (custom = {}) => ({
 
 export const tableHeading = (custom = {}) => ({
     display: 'table-header-group',
-    backgroundColor: DEFAULT_HEADER_CELL_COLOR,
     fontWeight: 'bold',
     padding: '15px 30px',
     borderBottom: DEFAULT_BORDER,
@@ -46,7 +46,6 @@ export const tableBody = (custom = {}) => ({
 
 export const tableCell = (custom = {}) => ({
     display: 'table-cell',
-    backgroundColor: DEFAULT_HEADER_CELL_COLOR,
     padding: '5px 10px',
     borderBottom: '1px solid #DDD',
     borderRight: DEFAULT_BORDER,

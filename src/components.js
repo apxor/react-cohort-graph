@@ -19,7 +19,7 @@ const renderValue = (props) => {
 };
 
 export const HeaderCell = (props) => (
-    <div style={{...tableCell({}), backgroundColor: props.color, ...props.style}}>
+    <div style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}}>
         <p style={headerLabel(props.headerLabelStyles)}>{props.label}</p>
         <span style={headerValue({})}>{renderValue(props)}</span>
     </div>

@@ -11,29 +11,40 @@ import {
 import DataStore from './DataStore';
 import { HeaderCell, BodyCell, ScrollableContent } from './components';
 import { VALUE_KEYS } from './constants';
+import {
+    DEFAULT_SHADE_COLOR, DEFAULT_BODY_CELL_COLOR,
+    DEFAULT_HEADER_CELL_COLOR, DEFAULT_KEY_CELL_COLOR
+}  from './styles';
 
 class ReactCohortGraph extends React.Component {
 
     constructor(props){
         super(props);
         const {
-            showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter,
-            data, dataType, cellClickEvent, defaultValueType =  VALUE_KEYS.PERCENT,
-            columnClickEvent, showAbsolute, toggleValues,
+            data = {},
+            defaultValueType =  VALUE_KEYS.PERCENT,
             shadeColor
         } = props;
         this.state = {
-            dataStore: new DataStore({}, {shadeColor}),
+            dataStore: this._getStore(props),
             currentType: "",
             valueType: defaultValueType
         };
     }
 
+    _getStore = (props) => {
+        const { data = {},
+            shadeColor = DEFAULT_SHADE_COLOR, headerCellColor = DEFAULT_HEADER_CELL_COLOR,
+            bodyCellColor = DEFAULT_BODY_CELL_COLOR, keyCellColor = DEFAULT_KEY_CELL_COLOR
+        } = props;
+        return new DataStore(data, {shadeColor, headerCellColor, bodyCellColor, keyCellColor});
+    };
+
     componentWillMount(){
-        const { data, onStoreUpdate, shadeColor } = this.props;
+        const { data, onStoreUpdate } = this.props;
         const keys = Object.keys(data);
         if(keys.length > 0) {
-            const store  = new DataStore(data || {}, {shadeColor});
+            const store  = this._getStore(this.props);
             const currentType =  keys[0];
             if(typeof onStoreUpdate === 'function'){
                 onStoreUpdate(store, currentType, this.state.valueType);
@@ -46,11 +57,11 @@ class ReactCohortGraph extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { data, dataType, valueType, onStoreUpdate, shadeColor } = nextProps;
+        const { data, dataType, valueType, onStoreUpdate } = nextProps;
         const { currentType } = this.state;
         const keys = Object.keys(data);
         if(keys.length > 0) {
-            const store = new DataStore(data || {}, {shadeColor});
+            const store = this._getStore(this.props);
             const currentDataType = dataType || Object.keys(data)[0];
             if (currentType === "" || (valueType === this.state.valueType && dataType === currentType)) {
                 this.setState({
@@ -87,7 +98,7 @@ class ReactCohortGraph extends React.Component {
             tableStyles, tableRowStyles, tableHeadingStyles,
             tableBodyStyles, fixedTablePartStyles, wrapperStyles,
             scrollableTablePartStyles, scrollableTableContentStyles,
-            headerLabelStyles
+            headerLabelStyles, tableCellStyles
         } = this.props;
         const { dataStore, currentType, valueType } = this.state;
         const header = dataStore.getHeader(currentType);
@@ -114,7 +125,7 @@ class ReactCohortGraph extends React.Component {
                                         <div style={TableHeadingStyles}>
                                             {
                                                 header.map((headerCell, i) =>
-                                                    this.isFixed(i) && <HeaderCell headerLabelStyles={headerLabelStyles} style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
+                                                    this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} headerLabelStyles={headerLabelStyles} style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
                                                 )
                                             }
                                         </div>
@@ -124,7 +135,7 @@ class ReactCohortGraph extends React.Component {
                                                     <div style={TableRowStyles} key={"row" + j}>
                                                         {
                                                             row.map((cell, k) =>
-                                                                this.isFixed(k) && <BodyCell style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} labelFormatter={labelFormatter}/>
+                                                                this.isFixed(k) && <BodyCell tableCellStyles={tableCellStyles} style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} labelFormatter={labelFormatter}/>
                                                             )
                                                         }
                                                     </div>
@@ -139,7 +150,7 @@ class ReactCohortGraph extends React.Component {
                                             <div style={TableHeadingStyles}>
                                                 {
                                                     header.map((headerCell, i) =>
-                                                        !this.isFixed(i) && <HeaderCell style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
+                                                        !this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
                                                     )
                                                 }
                                             </div>
@@ -149,7 +160,7 @@ class ReactCohortGraph extends React.Component {
                                                         <div style={TableRowStyles} key={"row" + j}>
                                                             {
                                                                 row.map((cell, k) =>
-                                                                    !this.isFixed(k) && <BodyCell style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} />
+                                                                    !this.isFixed(k) && <BodyCell tableCellStyles={tableCellStyles} style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} />
                                                                 )
                                                             }
                                                         </div>
@@ -183,6 +194,9 @@ ReactCohortGraph.propTypes = {
     customEmptyDataMessage : PropTypes.any,
     columnClickEvent : PropTypes.func,
     shadeColor: PropTypes.string, //#3f83a3
+    headerCellColor: PropTypes.string,
+    bodyCellColor: PropTypes.string,
+    keyCellColor: PropTypes.string,
     labelFormatter: PropTypes.func, //function(label){ return formattedLabel;}
     /*maxDays : PropTypes.number,
     maxWeeks : PropTypes.number, //TODO:

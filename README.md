@@ -6,7 +6,7 @@ Cohort Analysis Graph using ReactJS
 
 Basic Version with minimal visualization without any actions or events.
 
-#### Documentation
+##### Documentation (Props)
 
 
 ```
@@ -19,10 +19,10 @@ Basic Version with minimal visualization without any actions or events.
     customEmptyDataMessage : PropTypes.any,
     columnClickEvent : PropTypes.func,
     shadeColor: PropTypes.string, //#3f83a3
+    headerCellColor: PropTypes.string,
+    bodyCellColor: PropTypes.string,
+    keyCellColor: PropTypes.string,
     labelFormatter: PropTypes.func, //function(label){ return formattedLabel;}
-    /*maxDays : PropTypes.number,
-    maxWeeks : PropTypes.number, //TODO:
-    maxMonths : PropTypes.number,*/
     //enableTooltip : PropTypes.bool, TODO
     showAbsolute : PropTypes.bool,
     toggleValues : PropTypes.bool,

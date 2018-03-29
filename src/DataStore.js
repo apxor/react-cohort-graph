@@ -1,7 +1,7 @@
 /**
  * Created by jyothi on 30/5/17.
  */
-import { DEFAULT_CELL_COLOR, DEFAULT_HEADER_CELL_COLOR, DEFAULT_KEY_CELL_COLOR }  from './styles';
+import { DEFAULT_BODY_CELL_COLOR, DEFAULT_HEADER_CELL_COLOR, DEFAULT_KEY_CELL_COLOR }  from './styles';
 import { VALUE_KEYS } from './constants';
 
 const { VALUE, PERCENT } = VALUE_KEYS;
@@ -25,7 +25,7 @@ export default class DataStore {
         this.rawStore = data;
         this.store = {};
         this.headers = {};
-        this.shadeColor = options.shadeColor || DEFAULT_SHADE_COLOR;
+        this.options = options;
         if(this.isValid){
             this._buildStore(data);
             this._buildHeaders();
@@ -76,7 +76,7 @@ export default class DataStore {
                         cellData.valueFor = anotherKey;
                         cellData.total = data[key][anotherKey].length > 0 ? data[key][anotherKey][0] : 0;
                         cellData[PERCENT] = 100;
-                        cellData.color = DEFAULT_KEY_CELL_COLOR;
+                        cellData.color = this.options.keyCellColor;
                         cellData.isLabel = true;
                         this.store[key].push([
                             cellData, ...data[key][anotherKey].map((value, index) => {
@@ -88,7 +88,7 @@ export default class DataStore {
                                     total: cellData.total,
                                     isTotal: index === 0,
                                     [PERCENT]: percent,
-                                    color: index === 0 ? DEFAULT_CELL_COLOR : this._shadeCellWithColor(percent, this.shadeColor)
+                                    color: index === 0 ? this.options.bodyCellColor : this._shadeCellWithColor(percent, this.options.shadeColor)
                                 };
                             })
                         ]);
@@ -109,7 +109,7 @@ export default class DataStore {
                 this.headers[key] = [];
                 this.headers[key].push({ //first cell
                     value: "", //TODO:
-                    color: DEFAULT_HEADER_CELL_COLOR,
+                    color: this.options.headerCellColor,
                     isLabel: true,
                     label: this._turnCamelCase(key)
                 });
@@ -122,7 +122,7 @@ export default class DataStore {
                 cellData.total = cellData.value;
                 cellData[PERCENT] = 100;
                 cellData.isTotal = true;
-                cellData.color = DEFAULT_HEADER_CELL_COLOR;
+                cellData.color = this.options.headerCellColor;
                 cellData.label = labelPrefix + ' ' + 0;
                 this.headers[key].push(cellData); //second cell
                 const totalRows = this.store[key].length;
@@ -139,7 +139,7 @@ export default class DataStore {
                         valueFor: largeRow[0],
                         total: cellData.total,
                         [PERCENT]: percent,
-                        color: this._shadeCellWithColor(percent),
+                        color: this._shadeCellWithColor(percent, this.options.shadeColor),
                         label: labelPrefix + ' ' + (index - 1)
                     });
                 });
