@@ -33,7 +33,7 @@ class ReactCohortGraph extends React.Component {
         const { data, onStoreUpdate, shadeColor } = this.props;
         const keys = Object.keys(data);
         if(keys.length > 0) {
-            const store  = new DataStore(data || {shadeColor});
+            const store  = new DataStore(data || {}, {shadeColor});
             const currentType =  keys[0];
             if(typeof onStoreUpdate === 'function'){
                 onStoreUpdate(store, currentType, this.state.valueType);
@@ -46,11 +46,11 @@ class ReactCohortGraph extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const { data, dataType, valueType, onStoreUpdate } = nextProps;
+        const { data, dataType, valueType, onStoreUpdate, shadeColor } = nextProps;
         const { currentType } = this.state;
         const keys = Object.keys(data);
         if(keys.length > 0) {
-            const store = new DataStore(data || {});
+            const store = new DataStore(data || {}, {shadeColor});
             const currentDataType = dataType || Object.keys(data)[0];
             if (currentType === "" || (valueType === this.state.valueType && dataType === currentType)) {
                 this.setState({

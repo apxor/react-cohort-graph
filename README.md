@@ -9,7 +9,7 @@ Basic Version with minimal visualization without any actions or events.
 #### Documentation
 
 
-```json
+```
 {
     data : PropTypes.object.isRequired, //{days: [], weeks: [], months: []}
     dataType: PropTypes.string, //keys of data
