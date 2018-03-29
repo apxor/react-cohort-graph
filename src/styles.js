@@ -3,76 +3,87 @@
  */
 
 export const DEFAULT_CELL_COLOR = "#F5F5F5";
-export const DEFAULT_KEY_CELL_COLOR = "#EEE";
-export const DEFAULT_HEADER_CELL_COLOR = "#DDD";
+export const DEFAULT_KEY_CELL_COLOR = "#F6F6F6";
+export const DEFAULT_HEADER_CELL_COLOR = "#F5F5F5";
 
-export const DEFAULT_BORDER = "1px solid #CCC";
+export const DEFAULT_BORDER = "1px solid #F1F1F1";
 
-export const Wrapper = {
+export const wrapper = (custom = {}) => ({
     width: "100%",
     padding: 0,
-    margin: 0
-};
+    margin: 0,
+    ...custom
+});
 
-export const Table = {
+export const table = (custom = {}) => ({
     display: 'table',
     width: "100%",
     borderCollapse: 'collapse',
     textAlign: 'center',
-    borderLeft: DEFAULT_BORDER
-};
+    borderLeft: DEFAULT_BORDER,
+    ...custom
+});
 
-export const TableRow = {
-    display: 'table-row'
-};
+export const tableRow = (custom = {}) => ({
+    display: 'table-row',
+    ...custom
+});
 
-export const TableHeading = {
+export const tableHeading = (custom = {}) => ({
     display: 'table-header-group',
     backgroundColor: DEFAULT_HEADER_CELL_COLOR,
     fontWeight: 'bold',
-    padding: '5px 10px',
+    padding: '15px 30px',
     borderBottom: DEFAULT_BORDER,
-    borderTop: DEFAULT_BORDER
-};
+    borderTop: DEFAULT_BORDER,
+    ...custom
+});
 
-export const TableBody = {
-    display: 'table-row-group'
-};
+export const tableBody = (custom = {}) => ({
+    display: 'table-row-group',
+    ...custom
+});
 
-export const TableCell = {
+export const tableCell = (custom = {}) => ({
     display: 'table-cell',
     backgroundColor: DEFAULT_HEADER_CELL_COLOR,
     padding: '5px 10px',
     borderBottom: '1px solid #DDD',
     borderRight: DEFAULT_BORDER,
     minWidth: '60px',
-    whiteSpace: 'nowrap'
-};
+    whiteSpace: 'nowrap',
+    ...custom
+});
 
-export const HeaderValue = {
-    fontSize: '12px'
-};
+export const headerValue = (custom = {}) => ({
+    fontSize: '12px',
+    ...custom
+});
 
-export const HeaderLabel = {
+export const headerLabel = (custom = {}) => ({
     fontSize: '16px',
     padding: '0',
-    margin: '0'
-};
+    margin: '0',
+    ...custom
+});
 
-export const FixedTablePart = {
+export const fixedTablePart = (custom = {}) => ({
     display: 'table-cell',
-    minWidth: '200px'
-};
+    minWidth: '200px',
+    ...custom
+});
 
-export const ScrollableTableContent = {
+export const scrollableTableContent = (custom = {}) => ({
     position: 'relative',
-    display: 'block'
-};
+    display: 'block',
+    ...custom
+});
 
-export const ScrollableTablePart = {
+export const scrollableTablePart = (custom = {}) => ({
     display: 'table-cell',
     overflowX: 'auto',
     whiteSpace: 'nowrap',
     width: "100%",
-    minWidth: 60
-};
+    minWidth: 60,
+    custom
+});

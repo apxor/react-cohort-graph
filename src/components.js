@@ -3,9 +3,8 @@
  */
 import React from 'react';
 import {
-    Table, TableRow, TableHeading,
-    TableBody, TableCell, HeaderValue,
-    HeaderLabel, ScrollableTableContent
+    tableCell, headerValue, headerLabel,
+    scrollableTableContent
 } from './styles';
 import { VALUE_KEYS } from './constants';
 
@@ -20,14 +19,14 @@ const renderValue = (props) => {
 };
 
 export const HeaderCell = (props) => (
-    <div style={{...TableCell, backgroundColor: props.color, ...props.style}}>
-        <p style={HeaderLabel}>{props.label}</p>
-        <span style={HeaderValue}>{renderValue(props)}</span>
+    <div style={{...tableCell({}), backgroundColor: props.color, ...props.style}}>
+        <p style={headerLabel(props.headerLabelStyles)}>{props.label}</p>
+        <span style={headerValue({})}>{renderValue(props)}</span>
     </div>
 );
 
 export const BodyCell = (props) => (
-    <div style={{...TableCell, backgroundColor: props.color, ...props.style}} title={`Out of ${props.total} on ${props.valueFor}`}>
+    <div style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}} title={`Out of ${props.total} on ${props.valueFor}`}>
         {renderValue(props)}
     </div>
 );
@@ -50,8 +49,9 @@ export class ScrollableContent extends React.Component {
     }
 
     render(){
+        const { scrollableTableContentStyles } = this.props;
         return(
-            <div ref={x => this.ref = x} style={{...ScrollableTableContent, width: this.state.width}}>
+            <div ref={x => this.ref = x} style={{...scrollableTableContent(scrollableTableContentStyles), width: this.state.width}}>
                 {this.props.children}
             </div>
         )

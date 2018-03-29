@@ -4,9 +4,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-    Table, TableRow, TableHeading,
-    TableBody, FixedTablePart, Wrapper,
-    ScrollableTablePart, ScrollableTableContent
+    table, tableRow, tableHeading,
+    tableBody, fixedTablePart, wrapper,
+    scrollableTablePart, scrollableTableContent
 } from './styles';
 import DataStore from './DataStore';
 import { HeaderCell, BodyCell, ScrollableContent } from './components';
@@ -19,20 +19,21 @@ class ReactCohortGraph extends React.Component {
         const {
             showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter,
             data, dataType, cellClickEvent, defaultValueType =  VALUE_KEYS.PERCENT,
-            columnClickEvent, showAbsolute, toggleValues
+            columnClickEvent, showAbsolute, toggleValues,
+            shadeColor
         } = props;
         this.state = {
-            dataStore: new DataStore({}),
+            dataStore: new DataStore({}, {shadeColor}),
             currentType: "",
             valueType: defaultValueType
         };
     }
 
     componentWillMount(){
-        const { data, onStoreUpdate } = this.props;
+        const { data, onStoreUpdate, shadeColor } = this.props;
         const keys = Object.keys(data);
         if(keys.length > 0) {
-            const store  = new DataStore(data || {});
+            const store  = new DataStore(data || {shadeColor});
             const currentType =  keys[0];
             if(typeof onStoreUpdate === 'function'){
                 onStoreUpdate(store, currentType, this.state.valueType);
@@ -82,33 +83,45 @@ class ReactCohortGraph extends React.Component {
     render(){
         const {
             showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter,
-            bodyCellStyles = {}, headerCellStyles = {}
+            bodyCellStyles = {}, headerCellStyles = {},
+            tableStyles, tableRowStyles, tableHeadingStyles,
+            tableBodyStyles, fixedTablePartStyles, wrapperStyles,
+            scrollableTablePartStyles, scrollableTableContentStyles,
+            headerLabelStyles
         } = this.props;
         const { dataStore, currentType, valueType } = this.state;
         const header = dataStore.getHeader(currentType);
         const rows = dataStore.getRows(currentType);
+        const TableStyles = table(tableStyles);
+        const TableRowStyles = tableRow(tableRowStyles);
+        const TableHeadingStyles = tableHeading(tableHeadingStyles);
+        const TableBodyStyles = tableBody(tableBodyStyles);
+        const FixedTablePartStyles = fixedTablePart(fixedTablePartStyles);
+        const WrapperStyles = wrapper(wrapperStyles);
+        const ScrollableTablePartStyles = scrollableTablePart(scrollableTablePartStyles);
+        const ScrollableTableContentStyles = scrollableTableContent(scrollableTableContentStyles);
         if(header && header.length > 0){
             return(
-                <div style={Wrapper}>
+                <div style={WrapperStyles}>
                     {
                         this.renderChildren({...this.props, ...this.state})
                     }
-                    <div style={Table}>
-                        <div style={TableBody}>
-                            <div style={TableRow}>
-                                <div style={FixedTablePart}>
-                                    <div style={Table}>
-                                        <div style={TableHeading}>
+                    <div style={TableStyles}>
+                        <div style={TableBodyStyles}>
+                            <div style={TableRowStyles}>
+                                <div style={FixedTablePartStyles}>
+                                    <div style={TableStyles}>
+                                        <div style={TableHeadingStyles}>
                                             {
                                                 header.map((headerCell, i) =>
-                                                    this.isFixed(i) && <HeaderCell style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
+                                                    this.isFixed(i) && <HeaderCell headerLabelStyles={headerLabelStyles} style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
                                                 )
                                             }
                                         </div>
-                                        <div style={TableBody}>
+                                        <div style={TableBodyStyles}>
                                             {
                                                 rows.map((row, j) =>
-                                                    <div style={TableRow} key={"row" + j}>
+                                                    <div style={TableRowStyles} key={"row" + j}>
                                                         {
                                                             row.map((cell, k) =>
                                                                 this.isFixed(k) && <BodyCell style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} labelFormatter={labelFormatter}/>
@@ -120,20 +133,20 @@ class ReactCohortGraph extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div style={ScrollableTablePart}>
-                                    <ScrollableContent>
-                                        <div style={Table}>
-                                            <div style={TableHeading}>
+                                <div style={ScrollableTablePartStyles}>
+                                    <ScrollableContent scrollableTableContentStyles={scrollableTableContentStyles}>
+                                        <div style={TableStyles}>
+                                            <div style={TableHeadingStyles}>
                                                 {
                                                     header.map((headerCell, i) =>
                                                         !this.isFixed(i) && <HeaderCell style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
                                                     )
                                                 }
                                             </div>
-                                            <div style={TableBody}>
+                                            <div style={TableBodyStyles}>
                                                 {
                                                     rows.map((row, j) =>
-                                                        <div style={TableRow} key={"row" + j}>
+                                                        <div style={TableRowStyles} key={"row" + j}>
                                                             {
                                                                 row.map((cell, k) =>
                                                                     !this.isFixed(k) && <BodyCell style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} />
@@ -169,6 +182,7 @@ ReactCohortGraph.propTypes = {
     showEmptyDataMessage : PropTypes.bool,
     customEmptyDataMessage : PropTypes.any,
     columnClickEvent : PropTypes.func,
+    shadeColor: PropTypes.string, //#3f83a3
     labelFormatter: PropTypes.func, //function(label){ return formattedLabel;}
     /*maxDays : PropTypes.number,
     maxWeeks : PropTypes.number, //TODO:
@@ -178,8 +192,20 @@ ReactCohortGraph.propTypes = {
     toggleValues : PropTypes.bool,
     showHeaderValues : PropTypes.bool,
     onStoreUpdate : PropTypes.func, //function(store, currentType, valueType)
+    //Styles
     headerCellStyles: PropTypes.object,
-    bodyCellStyles: PropTypes.object
+    bodyCellStyles: PropTypes.object,
+    tableCellStyles: PropTypes.object,
+    tableStyles: PropTypes.object,
+    tableRowStyles: PropTypes.object,
+    tableHeadingStyles: PropTypes.object,
+    tableBodyStyles: PropTypes.object,
+    fixedTablePartStyles: PropTypes.object,
+    wrapperStyles: PropTypes.object,
+    scrollableTablePartStyles: PropTypes.object,
+    scrollableTableContentStyles: PropTypes.object,
+    headerValueStyles: PropTypes.object,
+    headerLabelStyles: PropTypes.object,
 };
 
 export default ReactCohortGraph;

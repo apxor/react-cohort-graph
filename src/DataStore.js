@@ -6,6 +6,8 @@ import { VALUE_KEYS } from './constants';
 
 const { VALUE, PERCENT } = VALUE_KEYS;
 
+const DEFAULT_SHADE_COLOR = "#3f83a3";
+
 export default class DataStore {
 
     /**
@@ -17,12 +19,13 @@ export default class DataStore {
      *  headerColor
      * }
      */
-    constructor(data, options){
+    constructor(data, options = {}){
         this.isValid = true;
         this._checkValidity(data);
         this.rawStore = data;
         this.store = {};
         this.headers = {};
+        this.shadeColor = options.shadeColor || DEFAULT_SHADE_COLOR;
         if(this.isValid){
             this._buildStore(data);
             this._buildHeaders();
@@ -85,7 +88,7 @@ export default class DataStore {
                                     total: cellData.total,
                                     isTotal: index === 0,
                                     [PERCENT]: percent,
-                                    color: index === 0 ? DEFAULT_CELL_COLOR : this._shadeCellWithColor(percent)
+                                    color: index === 0 ? DEFAULT_CELL_COLOR : this._shadeCellWithColor(percent, this.shadeColor)
                                 };
                             })
                         ]);
