@@ -41,10 +41,20 @@ export class ScrollableContent extends React.Component {
         this.ref = null;
     }
 
+    setWidth = () => {
+        if(this.ref && this.ref.parentNode){
+            try{
+                this.setState({width: this.ref.parentNode.clientWidth - 1});
+            }catch (e) {
+                //console.error(e);
+            }
+        }
+    };
+
     componentDidMount(){
-        this.setState({width: this.ref.parentNode.clientWidth - 1});
+        this.setWidth();
         window.addEventListener('resize', () => {
-            this.setState({width: this.ref.parentNode.clientWidth - 1});
+            this.setWidth();
         });
     }
 
