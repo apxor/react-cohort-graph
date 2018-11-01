@@ -93,7 +93,7 @@ class ReactCohortGraph extends React.Component {
 
     render(){
         const {
-            showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter,
+            showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter, headerFormatter,
             bodyCellStyles = {}, headerCellStyles = {},
             tableStyles, tableRowStyles, tableHeadingStyles,
             tableBodyStyles, fixedTablePartStyles, wrapperStyles,
@@ -111,6 +111,7 @@ class ReactCohortGraph extends React.Component {
         const WrapperStyles = wrapper(wrapperStyles);
         const ScrollableTablePartStyles = scrollableTablePart(scrollableTablePartStyles);
         const ScrollableTableContentStyles = scrollableTableContent(scrollableTableContentStyles);
+        console.log(header)
         if(header && header.length > 0){
             return(
                 <div style={WrapperStyles}>
@@ -125,7 +126,7 @@ class ReactCohortGraph extends React.Component {
                                         <div style={TableHeadingStyles}>
                                             {
                                                 header.map((headerCell, i) =>
-                                                    this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} headerLabelStyles={headerLabelStyles} style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
+                                                    this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} headerLabelStyles={headerLabelStyles} style={headerCellStyles} key={"header" + i} {...headerCell} headerFormatter={headerFormatter} valueType={valueType} />
                                                 )
                                             }
                                         </div>
@@ -150,7 +151,7 @@ class ReactCohortGraph extends React.Component {
                                             <div style={TableHeadingStyles}>
                                                 {
                                                     header.map((headerCell, i) =>
-                                                        !this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} style={headerCellStyles} key={"header" + i} {...headerCell} valueType={valueType} />
+                                                        !this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} style={headerCellStyles} key={"header" + i} {...headerCell} headerFormatter={headerFormatter} valueType={valueType} />
                                                     )
                                                 }
                                             </div>
@@ -198,6 +199,7 @@ ReactCohortGraph.propTypes = {
     bodyCellColor: PropTypes.string,
     keyCellColor: PropTypes.string,
     labelFormatter: PropTypes.func, //function(label){ return formattedLabel;}
+    headerFormatter: PropTypes.func,
     /*maxDays : PropTypes.number,
     maxWeeks : PropTypes.number, //TODO:
     maxMonths : PropTypes.number,*/
