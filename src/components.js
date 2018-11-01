@@ -18,9 +18,17 @@ const renderValue = (props) => {
     return (isTotal || isLabel) ? props[VALUE] : (props.valueType === PERCENT ? `${props[PERCENT]} %` : props[VALUE]);
 };
 
+const renderHeader = props => {
+    const {isHeader, headerFormatter, label} = props;
+    if(typeof headerFormatter === 'function' && isHeader){
+        return headerFormatter(label);
+    }
+    return label
+}
+
 export const HeaderCell = (props) => (
     <div style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}}>
-        <p style={headerLabel(props.headerLabelStyles)}>{props.label}</p>
+        <p style={headerLabel(props.headerLabelStyles)}>{renderHeader(props)}</p>
         <span style={headerValue({})}>{renderValue(props)}</span>
     </div>
 );
