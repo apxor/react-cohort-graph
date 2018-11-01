@@ -23,6 +23,7 @@ Basic Version with minimal visualization without any actions or events.
     bodyCellColor: PropTypes.string,
     keyCellColor: PropTypes.string,
     labelFormatter: PropTypes.func, //function(label){ return formattedLabel;}
+    headerFormatter: PropTypes.func, //function(header){ return formattedheader;}
     //enableTooltip : PropTypes.bool, TODO
     showAbsolute : PropTypes.bool,
     toggleValues : PropTypes.bool,
