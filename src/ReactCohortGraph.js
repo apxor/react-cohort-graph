@@ -68,10 +68,16 @@ class ReactCohortGraph extends React.Component {
                     dataStore: store
                 });
             }else{
-                this.setState({
-                    currentType: currentDataType,
-                    valueType: valueType
-                });
+                if (valueType) {
+                    this.setState({
+                        currentType: currentDataType,
+                        valueType: valueType
+                    });
+                } else {
+                    this.setState({
+                        currentType: currentDataType,
+                    });
+                }
             }
             if(typeof onStoreUpdate === 'function') {
                 onStoreUpdate(store, currentDataType, valueType);
