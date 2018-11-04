@@ -99,7 +99,7 @@ class ReactCohortGraph extends React.Component {
 
     render(){
         const {
-            showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter, headerFormatter,
+            showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter, headerFormatter, showHeaderValues, 
             bodyCellStyles = {}, headerCellStyles = {},
             tableStyles, tableRowStyles, tableHeadingStyles,
             tableBodyStyles, fixedTablePartStyles, wrapperStyles,
@@ -132,7 +132,7 @@ class ReactCohortGraph extends React.Component {
                                         <div style={TableHeadingStyles}>
                                             {
                                                 header.map((headerCell, i) =>
-                                                    this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} headerLabelStyles={headerLabelStyles} style={headerCellStyles} key={"header" + i} {...headerCell} headerFormatter={headerFormatter} valueType={valueType} />
+                                                    this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} headerLabelStyles={headerLabelStyles} style={headerCellStyles} key={"header" + i} {...headerCell} headerFormatter={headerFormatter} showHeaderValues={showHeaderValues} valueType={valueType} />
                                                 )
                                             }
                                         </div>
@@ -157,7 +157,7 @@ class ReactCohortGraph extends React.Component {
                                             <div style={TableHeadingStyles}>
                                                 {
                                                     header.map((headerCell, i) =>
-                                                        !this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} style={headerCellStyles} key={"header" + i} {...headerCell} headerFormatter={headerFormatter} valueType={valueType} />
+                                                        !this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} style={headerCellStyles} key={"header" + i} {...headerCell} headerFormatter={headerFormatter} showHeaderValues={showHeaderValues} valueType={valueType} />
                                                     )
                                                 }
                                             </div>
