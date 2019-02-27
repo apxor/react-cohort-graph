@@ -63,7 +63,7 @@
 {% endif %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react-dom.js"></script>
-<script src="lib/reactcohortgraph.js"></script>
+<script src="../lib/reactcohortgraph.js"></script>
 <script>
     var data = {
         days : {
@@ -117,7 +117,10 @@
                 shadeColor: '#8E8FBF',
                 bodyCellColor: "#EEE",
                 keyCellColor: "#EEE",
-                headerCellColor: "#EEE"
+                headerCellColor: "#EEE",
+                headerFormatter: function (head) {
+                    return head;
+                }
             }, null),
         document.getElementById("root")
     );

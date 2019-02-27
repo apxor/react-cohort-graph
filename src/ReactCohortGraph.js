@@ -117,7 +117,6 @@ class ReactCohortGraph extends React.Component {
         const WrapperStyles = wrapper(wrapperStyles);
         const ScrollableTablePartStyles = scrollableTablePart(scrollableTablePartStyles);
         const ScrollableTableContentStyles = scrollableTableContent(scrollableTableContentStyles);
-        console.log(header)
         if(header && header.length > 0){
             return(
                 <div style={WrapperStyles}>

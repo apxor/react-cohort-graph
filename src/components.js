@@ -19,12 +19,12 @@ const renderValue = (props) => {
 };
 
 const renderHeader = props => {
-    const {isHeader, headerFormatter, label} = props;
-    if(typeof headerFormatter === 'function' && isHeader){
+    const { headerFormatter, label} = props;
+    if(typeof headerFormatter === 'function'){
         return headerFormatter(label);
     }
-    return label
-}
+    return label;
+};
 
 export const HeaderCell = (props) => (
     <div style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}}>
