@@ -99,7 +99,8 @@ class ReactCohortGraph extends React.Component {
 
     render(){
         const {
-            showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter, headerFormatter, showHeaderValues, 
+            showEmptyDataMessage = true, customEmptyDataMessage, labelFormatter,
+            headerFormatter, showHeaderValues,
             bodyCellStyles = {}, headerCellStyles = {},
             tableStyles, tableRowStyles, tableHeadingStyles,
             tableBodyStyles, fixedTablePartStyles, wrapperStyles,

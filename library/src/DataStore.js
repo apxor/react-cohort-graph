@@ -1,12 +1,9 @@
 /**
  * Created by jyothi on 30/5/17.
  */
-import { DEFAULT_BODY_CELL_COLOR, DEFAULT_HEADER_CELL_COLOR, DEFAULT_KEY_CELL_COLOR }  from './styles';
 import { VALUE_KEYS } from './constants';
 
 const { VALUE, PERCENT } = VALUE_KEYS;
-
-const DEFAULT_SHADE_COLOR = "#3f83a3";
 
 export default class DataStore {
 

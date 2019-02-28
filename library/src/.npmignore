@@ -1,0 +1,14 @@
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+/src/
+/_layouts/
+/test/
+webpack.config.js
+.babelrc
+.gitignore
+*.spec.js
+*.test.js
+docs
