@@ -1,6 +1,6 @@
 {
   "name": "react-cohort-graph",
-  "version": "1.1.1",
+  "version": "1.1.1-beta.0",
   "description": "Cohort Analysis Graph with ReactJS",
   "main": "lib/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "build:umd": "cross-env webpack --env=dev --progress --profile --colors",
     "build:umd:min": "cross-env webpack --env=prod --progress --profile --colors",
     "prebuild": "rimraf build, lib",
-    "release": "npm run build && npm publish build --tag next",
+    "release": "npm run build && npm publish",
     "lint": "eslint ./src/**.js",
     "coverage": "jest --coverage --config=conf/jest.config.js",
     "test": "jest --config=conf/jest.config.js",
