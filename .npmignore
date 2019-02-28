@@ -10,3 +10,9 @@ gen
 /src/
 /_layouts/
 /test/
+docs
+# IntelliJ project files
+.babelrc
+.gitignore
+*.spec.js
+rollup.config.babel.js

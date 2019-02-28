@@ -11,9 +11,8 @@ gen
 *.log# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-library/node_modules
-library/dist
-library/lib
+dist
+lib
 /.pnp
 .pnp.js
 
@@ -33,3 +32,6 @@ library/lib
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+docs/node_modules
+docs/build
