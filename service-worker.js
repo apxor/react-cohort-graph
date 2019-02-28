@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/react-cohort-graph/precache-manifest.781f7b1c81473aa85a0d0086b4d2d469.js"
+  "/react-cohort-graph/precache-manifest.3fa19bf3133c004b7a3dd4bb868bdfba.js"
 );
 
 workbox.clientsClaim();
