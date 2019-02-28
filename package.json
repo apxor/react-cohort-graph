@@ -65,5 +65,10 @@
   },
   "dependencies": {
     "prop-types": "^15.7.2"
-  }
+  },
+  "files": [
+    "lib",
+    "dist"
+  ],
+  "unpkg": "dist/react-cohort-graph.js"
 }
