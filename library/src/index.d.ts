@@ -15,6 +15,7 @@ export interface Props {
     keyCellColor?: string;
     labelFormatter?: (obj: object) => string | any, //function(label){ return formattedLabel;}
     headerFormatter?: (obj: object) => string | any,
+    cellFormatter?: (obj: object) => string | any,
     /*maxDays : number,
     maxWeeks : number, //TODO:
     maxMonths : number,*/

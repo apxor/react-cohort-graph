@@ -61,7 +61,17 @@ class App extends Component {
 
                         <p>Cohort Analysis Graph using ReactJS</p>
 
-                        <ReactCohortGraph data={DATA} />
+                        <ReactCohortGraph
+                            data={DATA}
+                            headerFormatter={cell => {
+                                console.info(cell);
+                                return cell.label;
+                            }}
+                            cellFormatter={cell => {
+                                console.info(cell);
+                                return cell[cell.valueType];
+                            }}
+                        />
 
                         <h5 id="documentation-props">Documentation (Props)</h5>
 
@@ -82,7 +92,8 @@ class App extends Component {
         bodyCellColor: PropTypes.string,
         keyCellColor: PropTypes.string,
         labelFormatter: PropTypes.func, //function(obj){ return formattedLabel;}
-        headerFormatter: PropTypes.func, //function(obj){ return formattedheader;}
+        headerFormatter: PropTypes.func, //function(obj){ return formattedHeader;}
+        cellFormatter: PropTypes.func, //function(obj){ return formattedCell;}
         //enableTooltip : PropTypes.bool, TODO
         showAbsolute : PropTypes.bool,
         toggleValues : PropTypes.bool,

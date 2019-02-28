@@ -10,18 +10,20 @@ import { VALUE_KEYS } from './constants';
 
 const { VALUE, PERCENT } = VALUE_KEYS;
 
-const renderValue = (props) => {
-    const {isTotal, isLabel, valueType, labelFormatter} = props;
-    if(typeof labelFormatter === 'function' && isLabel){
-        return labelFormatter(props[VALUE]);
+const renderValue = (props) => { //label and cell formatters
+    const {isTotal, isLabel, valueType, formatter} = props;
+    if(typeof formatter === 'function'){
+        const { formatter, ...rest } = props;
+        return formatter(rest);
     }
-    return (isTotal || isLabel) ? props[VALUE] : (props.valueType === PERCENT ? `${props[PERCENT]} %` : props[VALUE]);
+    return (isTotal || isLabel) ? props[VALUE] : (valueType === PERCENT ? `${props[PERCENT]} %` : props[VALUE]);
 };
 
-const renderHeader = props => {
-    const { headerFormatter, label} = props;
-    if(typeof headerFormatter === 'function'){
-        return headerFormatter(label);
+const renderHeader = props => { //header formatter
+    const { formatter, label} = props;
+    if(typeof formatter === 'function'){
+        const { formatter, ...rest } = props;
+        return formatter(rest);
     }
     return label;
 };
