@@ -64,7 +64,7 @@ class App extends Component {
                         <ReactCohortGraph
                             data={DATA}
                             headerFormatter={cell => {
-                                console.info(cell);
+                                console.error(cell);
                                 return cell.label;
                             }}
                             cellFormatter={cell => {

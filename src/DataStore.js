@@ -79,6 +79,7 @@ export default class DataStore {
                             cellData, ...data[key][anotherKey].map((value, index) => {
                                 const percent = this._getPercentage(cellData.total, value);
                                 return {
+                                    index: index,
                                     type: key,
                                     [VALUE]: value,
                                     valueFor: anotherKey,
