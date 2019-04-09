@@ -100,7 +100,7 @@ class ReactCohortGraph extends React.Component {
     render(){
         const {
             showEmptyDataMessage = true, customEmptyDataMessage, showHeaderValues,
-            labelFormatter, cellFormatter, headerFormatter,
+            cellFormatter,
             bodyCellStyles = {}, headerCellStyles = {},
             tableStyles, tableRowStyles, tableHeadingStyles,
             tableBodyStyles, fixedTablePartStyles, wrapperStyles,
@@ -132,7 +132,18 @@ class ReactCohortGraph extends React.Component {
                                         <div style={TableHeadingStyles}>
                                             {
                                                 header.map((headerCell, i) =>
-                                                    this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} headerLabelStyles={headerLabelStyles} style={headerCellStyles} key={"header" + i} {...headerCell} formatter={headerFormatter} showHeaderValues={showHeaderValues} valueType={valueType} />
+                                                    this.isFixed(i) &&
+                                                    <HeaderCell
+                                                        tableCellStyles={tableCellStyles}
+                                                        headerLabelStyles={headerLabelStyles}
+                                                        style={headerCellStyles}
+                                                        key={"header" + i}
+                                                        {...headerCell}
+                                                        formatter={cellFormatter}
+                                                        showHeaderValues={showHeaderValues}
+                                                        valueType={valueType}
+                                                        isFixed
+                                                    />
                                                 )
                                             }
                                         </div>
@@ -142,7 +153,16 @@ class ReactCohortGraph extends React.Component {
                                                     <div style={TableRowStyles} key={"row" + j}>
                                                         {
                                                             row.map((cell, k) =>
-                                                                this.isFixed(k) && <BodyCell tableCellStyles={tableCellStyles} style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} formatter={labelFormatter}/>
+                                                                this.isFixed(k) &&
+                                                                <BodyCell
+                                                                    tableCellStyles={tableCellStyles}
+                                                                    style={bodyCellStyles}
+                                                                    key={"cell" + k}
+                                                                    {...cell}
+                                                                    valueType={valueType}
+                                                                    formatter={cellFormatter}
+                                                                    isFixed
+                                                                />
                                                             )
                                                         }
                                                     </div>
@@ -157,7 +177,17 @@ class ReactCohortGraph extends React.Component {
                                             <div style={TableHeadingStyles}>
                                                 {
                                                     header.map((headerCell, i) =>
-                                                        !this.isFixed(i) && <HeaderCell tableCellStyles={tableCellStyles} style={headerCellStyles} key={"header" + i} {...headerCell} formatter={headerFormatter} showHeaderValues={showHeaderValues} valueType={valueType} />
+                                                        !this.isFixed(i) &&
+                                                        <HeaderCell
+                                                            tableCellStyles={tableCellStyles}
+                                                            style={headerCellStyles}
+                                                            key={"header" + i}
+                                                            {...headerCell}
+                                                            formatter={cellFormatter}
+                                                            showHeaderValues={showHeaderValues}
+                                                            valueType={valueType}
+                                                            isFixed={false}
+                                                        />
                                                     )
                                                 }
                                             </div>
@@ -167,7 +197,16 @@ class ReactCohortGraph extends React.Component {
                                                         <div style={TableRowStyles} key={"row" + j}>
                                                             {
                                                                 row.map((cell, k) =>
-                                                                    !this.isFixed(k) && <BodyCell tableCellStyles={tableCellStyles} style={bodyCellStyles} key={"cell" + k} {...cell} valueType={valueType} formatter={cellFormatter}/>
+                                                                    !this.isFixed(k) &&
+                                                                    <BodyCell
+                                                                        tableCellStyles={tableCellStyles}
+                                                                        style={bodyCellStyles}
+                                                                        key={"cell" + k}
+                                                                        {...cell}
+                                                                        valueType={valueType}
+                                                                        formatter={cellFormatter}
+                                                                        isFixed={false}
+                                                                    />
                                                                 )
                                                             }
                                                         </div>
@@ -204,8 +243,6 @@ ReactCohortGraph.propTypes = {
     headerCellColor: PropTypes.string,
     bodyCellColor: PropTypes.string,
     keyCellColor: PropTypes.string,
-    labelFormatter: PropTypes.func, //function(label){ return formattedLabel;}
-    headerFormatter: PropTypes.func,
     cellFormatter: PropTypes.func,
     /*maxDays : PropTypes.number,
     maxWeeks : PropTypes.number, //TODO:

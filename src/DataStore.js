@@ -72,19 +72,22 @@ export default class DataStore {
                         cellData[VALUE] = anotherKey;
                         cellData.valueFor = anotherKey;
                         cellData.total = data[key][anotherKey].length > 0 ? data[key][anotherKey][0] : 0;
-                        cellData[PERCENT] = 100;
                         cellData.color = this.options.keyCellColor;
-                        cellData.isLabel = true;
+                        cellData.isDate = true;
+                        cellData.index = -1;
+                        cellData.isHeader = false;
                         this.store[key].push([
                             cellData, ...data[key][anotherKey].map((value, index) => {
                                 const percent = this._getPercentage(cellData.total, value);
                                 return {
+                                    isHeader: false,
                                     index: index,
                                     type: key,
                                     [VALUE]: value,
                                     valueFor: anotherKey,
                                     total: cellData.total,
                                     isTotal: index === 0,
+                                    isCell: index > 0,
                                     [PERCENT]: percent,
                                     color: index === 0 ? this.options.bodyCellColor : this._shadeCellWithColor(percent, this.options.shadeColor)
                                 };
@@ -105,24 +108,25 @@ export default class DataStore {
             if(this.store.hasOwnProperty(key)){
                 const labelPrefix = this._turnCamelCase(key.slice(0, -1));
                 this.headers[key] = [];
-                this.headers[key].push({ //first cell
-                    value: "", //TODO:
+                this.headers[key].push({ //first cell (Date)
+                    [VALUE]: "",
+                    [PERCENT]: "",
                     color: this.options.headerCellColor,
                     isLabel: true,
-                    label: this._turnCamelCase(key)
+                    label: this._turnCamelCase(key),
+                    index: 0
                 });
                 let cellData = {};
                 cellData.isHeader = true;
-                cellData.index = 0;
+                cellData.index = 1;
                 cellData.type = key;
                 cellData[VALUE] = this._sumOfColumnWithIndex(this.store[key], 1);
                 cellData.valueFor = key;
                 cellData.total = cellData.value;
                 cellData[PERCENT] = 100;
-                cellData.isTotal = true;
                 cellData.color = this.options.headerCellColor;
                 cellData.label = labelPrefix + ' ' + 0;
-                this.headers[key].push(cellData); //second cell
+                this.headers[key].push(cellData); //second cell (Initial Count)
                 const totalRows = this.store[key].length;
                 const largeRow = totalRows > 0 ? this.store[key][0] : [];
                 largeRow.forEach((el, index) => {

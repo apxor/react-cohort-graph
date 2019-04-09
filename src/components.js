@@ -11,12 +11,12 @@ import { VALUE_KEYS } from './constants';
 const { VALUE, PERCENT } = VALUE_KEYS;
 
 const renderValue = (props) => { //label and cell formatters
-    const {isTotal, isLabel, valueType, formatter} = props;
+    const {isTotal, isLabel, isDate, valueType, formatter} = props;
     if(typeof formatter === 'function'){
         const { formatter, ...rest } = props;
         return formatter(rest);
     }
-    return (isTotal || isLabel) ? props[VALUE] : (valueType === PERCENT ? `${props[PERCENT]} %` : props[VALUE]);
+    return (isTotal || isLabel || isDate) ? props[VALUE] : (valueType === PERCENT ? `${props[PERCENT]} %` : props[VALUE]);
 };
 
 const renderHeader = props => { //header formatter
@@ -31,7 +31,7 @@ const renderHeader = props => { //header formatter
 export const HeaderCell = (props) => (
     <div style={{...tableCell(props.tableCellStyles), backgroundColor: props.color, ...props.style}}>
         <p style={headerLabel(props.headerLabelStyles)}>{renderHeader(props)}</p>
-        {props.showHeaderValues ? (<span style={headerValue({})}>{renderValue(props)}</span>) : null}
+        {props.showHeaderValues ? (<span style={headerValue({})}>{renderValue({...props, isHeaderValue: true})}</span>) : null}
     </div>
 );
 
