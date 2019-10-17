@@ -100,7 +100,7 @@ class ReactCohortGraph extends React.Component {
     render(){
         const {
             showEmptyDataMessage = true, customEmptyDataMessage, showHeaderValues,
-            cellFormatter,
+            cellFormatter, headerFormatter,
             bodyCellStyles = {}, headerCellStyles = {},
             tableStyles, tableRowStyles, tableHeadingStyles,
             tableBodyStyles, fixedTablePartStyles, wrapperStyles,
@@ -139,7 +139,7 @@ class ReactCohortGraph extends React.Component {
                                                         style={headerCellStyles}
                                                         key={"header" + i}
                                                         {...headerCell}
-                                                        formatter={cellFormatter}
+                                                        formatter={typeof headerFormatter === "function" ? headerFormatter : cellFormatter}
                                                         showHeaderValues={showHeaderValues}
                                                         valueType={valueType}
                                                         isFixed
@@ -183,7 +183,7 @@ class ReactCohortGraph extends React.Component {
                                                             style={headerCellStyles}
                                                             key={"header" + i}
                                                             {...headerCell}
-                                                            formatter={cellFormatter}
+                                                            formatter={typeof headerFormatter === "function" ? headerFormatter : cellFormatter}
                                                             showHeaderValues={showHeaderValues}
                                                             valueType={valueType}
                                                             isFixed={false}
@@ -243,6 +243,7 @@ ReactCohortGraph.propTypes = {
     headerCellColor: PropTypes.string,
     bodyCellColor: PropTypes.string,
     keyCellColor: PropTypes.string,
+    headerFormatter: PropTypes.func,
     cellFormatter: PropTypes.func,
     /*maxDays : PropTypes.number,
     maxWeeks : PropTypes.number, //TODO:
