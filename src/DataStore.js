@@ -80,16 +80,30 @@ export default class DataStore {
                             cellData, ...data[key][anotherKey].map((value, index) => {
                                 const percent = this._getPercentage(cellData.total, value);
                                 return {
-                                    isHeader: false,
-                                    index: index,
-                                    type: key,
-                                    [VALUE]: value,
-                                    valueFor: anotherKey,
-                                    total: cellData.total,
-                                    isTotal: index === 0,
-                                    isCell: index > 0,
-                                    [PERCENT]: percent,
-                                    color: index === 0 ? this.options.bodyCellColor : this._shadeCellWithColor(percent, this.options.shadeColor)
+                                  isHeader: false,
+                                  index: index,
+                                  type: key,
+                                  [VALUE]: value,
+                                  valueFor: anotherKey,
+                                  total: cellData.total,
+                                  isTotal: index === 0,
+                                  isCell: index > 0,
+                                  [PERCENT]: percent,
+                                  color:
+                                    index === 0
+                                      ? this.options.bodyCellColor
+                                      : this.options.isNormalizedShadeColor
+                                      ? this._shadeCellWithColor(
+                                          this._normalizedValue(
+                                            data[key],
+                                            value
+                                          ),
+                                          this.options.shadeColor
+                                        )
+                                      : this._shadeCellWithColor(
+                                          percent,
+                                          this.options.shadeColor
+                                        ),
                                 };
                             })
                         ]);
@@ -337,5 +351,20 @@ export default class DataStore {
             return text.toLowerCase().replace(/\b\w/g, replaced => replaced.toUpperCase());
         }
     }
+
+    /**
+     * Normalized value of cell for color shade
+     * @param array
+     * @param cellValue - cell value
+     * @returns {number} - normalized cell value
+     */
+     _normalizedValue = (array, value) => {
+        let joinedArray = [];
+        Object.entries(array).map((el) => {
+          joinedArray = [...joinedArray, ...el[1].slice(1)];
+        });
+        const nv = ((value - Math.min(...joinedArray)) / (Math.max(...joinedArray) - Math.min(...joinedArray))) * 100;
+        return Math.round(nv);
+      };
 }
 

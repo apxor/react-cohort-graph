@@ -37,7 +37,8 @@ export interface Props {
     scrollableTablePartStyles?: object;
     scrollableTableContentStyles?: object;
     headerValueStyles?: object;
-    headerLabelStyles?: object
+    headerLabelStyles?: object;
+    isNormalizedShadeColor?: boolean;
 }
 
 declare const ReactCohortGraph: React.ComponentType<Props>;
