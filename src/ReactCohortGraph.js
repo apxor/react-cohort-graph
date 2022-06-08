@@ -10,7 +10,7 @@ import {
 } from './styles';
 import DataStore from './DataStore';
 import { HeaderCell, BodyCell, ScrollableContent } from './components';
-import { VALUE_KEYS } from './constants';
+import { DEFAULT_VALUES, VALUE_KEYS } from './constants';
 import {
     DEFAULT_SHADE_COLOR, DEFAULT_BODY_CELL_COLOR,
     DEFAULT_HEADER_CELL_COLOR, DEFAULT_KEY_CELL_COLOR
@@ -35,9 +35,10 @@ class ReactCohortGraph extends React.Component {
     _getStore = (props) => {
         const { data = {},
             shadeColor = DEFAULT_SHADE_COLOR, headerCellColor = DEFAULT_HEADER_CELL_COLOR,
-            bodyCellColor = DEFAULT_BODY_CELL_COLOR, keyCellColor = DEFAULT_KEY_CELL_COLOR
+            bodyCellColor = DEFAULT_BODY_CELL_COLOR, keyCellColor = DEFAULT_KEY_CELL_COLOR,
+            isNormalizedShadeColor = DEFAULT_VALUES.IS_NORMALIZED_SHADE_COLOR,
         } = props;
-        return new DataStore(data, {shadeColor, headerCellColor, bodyCellColor, keyCellColor});
+        return new DataStore(data, {shadeColor, headerCellColor, bodyCellColor, keyCellColor, isNormalizedShadeColor});
     };
 
     componentWillMount(){
@@ -267,6 +268,7 @@ ReactCohortGraph.propTypes = {
     scrollableTableContentStyles: PropTypes.object,
     headerValueStyles: PropTypes.object,
     headerLabelStyles: PropTypes.object,
+    isNormalizedShadeColor: PropTypes.bool,
 };
 
 export default ReactCohortGraph;

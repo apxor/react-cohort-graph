@@ -106,6 +106,7 @@ class App extends Component {
         scrollableTableContentStyles: PropTypes.object,
         headerValueStyles: PropTypes.object,
         headerLabelStyles: PropTypes.object,
+        isNormalizedShadeColor: PropTypes.bool,
     }`}
 </code>
 </pre>
