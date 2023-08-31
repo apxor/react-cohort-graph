@@ -181,6 +181,7 @@ class ReactCohortGraph extends React.Component {
                                                         <HeaderCell
                                                             tableCellStyles={tableCellStyles}
                                                             style={headerCellStyles}
+                                                            headerLabelStyles={headerLabelStyles}
                                                             key={"header" + i}
                                                             {...headerCell}
                                                             formatter={typeof headerFormatter === "function" ? headerFormatter : cellFormatter}
