@@ -28,9 +28,27 @@ class ReactCohortGraph extends React.Component {
         this.state = {
             dataStore: this._getStore(props),
             currentType: "",
-            valueType: defaultValueType
+            valueType: defaultValueType,
+            scrollPosition: 0
         };
     }
+    handleScroll = (event) => {
+    // Get the current scroll position
+    const { scrollTop } = event.target;
+
+    // Update the scroll position state
+    this.setState({ scrollPosition: scrollTop });
+
+    // Set the scroll position for the other div (replace 'yourOtherDivId' with the actual ID)
+    const otherDiv = document.getElementById('table2');
+    const currentDiv = document.getElementById('table1')
+    if (otherDiv) {
+        otherDiv.scrollTop = scrollTop;
+    };
+    if (currentDiv) {
+        currentDiv.scrollTop = scrollTop;
+    }
+}
 
     _getStore = (props) => {
         const { data = {},
@@ -53,7 +71,7 @@ class ReactCohortGraph extends React.Component {
                 currentType: currentType,
                 dataStore: store
             });
-        }
+        };
     }
 
     componentWillReceiveProps(nextProps) {
@@ -86,8 +104,19 @@ class ReactCohortGraph extends React.Component {
     }
 
     componentDidMount(){
-
+        const divElement = document.getElementById('table1'); // Replace 'yourDivId' with the actual ID of your div
+        const divElement1 = document.getElementById('table2');
+        // Add scroll event listener to the div element when the component mounts
+        divElement.addEventListener('scroll', this.handleScroll);
+        divElement1.addEventListener('scroll', this.handleScroll);
     }
+    componentWillUnmount() {
+        const divElement = document.getElementById('table1'); // Replace 'yourDivId' with the actual ID of your div
+        const divElement1 = document.getElementById('table2'); 
+        // Remove the event listener when the component unmounts
+        divElement.removeEventListener('scroll', this.handleScroll);
+        divElement1.removeEventListener('scroll', this.handleScroll);
+      }
 
     isFixed = (index) => index < 2;
 
@@ -118,6 +147,7 @@ class ReactCohortGraph extends React.Component {
         const WrapperStyles = wrapper(wrapperStyles);
         const ScrollableTablePartStyles = scrollableTablePart(scrollableTablePartStyles);
         const ScrollableTableContentStyles = scrollableTableContent(scrollableTableContentStyles);
+
         if(header && header.length > 0){
             return(
                 <div style={WrapperStyles}>
@@ -128,7 +158,7 @@ class ReactCohortGraph extends React.Component {
                         <div style={TableBodyStyles}>
                             <div style={TableRowStyles}>
                                 <div style={FixedTablePartStyles}>
-                                    <div style={TableStyles}>
+                                    <div style={TableStyles} id="table1">
                                         <div style={TableHeadingStyles}>
                                             {
                                                 header.map((headerCell, i) =>
@@ -173,7 +203,7 @@ class ReactCohortGraph extends React.Component {
                                 </div>
                                 <div style={ScrollableTablePartStyles}>
                                     <ScrollableContent scrollableTableContentStyles={scrollableTableContentStyles}>
-                                        <div style={TableStyles}>
+                                        <div style={TableStyles} id="table2">
                                             <div style={TableHeadingStyles}>
                                                 {
                                                     header.map((headerCell, i) =>
